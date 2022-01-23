@@ -1,6 +1,6 @@
 module.exports = {
   HOST: "localhost",
   USER: "root",
-  PASSWORD: "Tlqkfdk140116!",
+  PASSWORD: "",
   DB: "tutorial-nodejs",
 };
