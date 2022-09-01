@@ -1,2 +1,6 @@
 server:
   # todo 운영 데이터베이스 연결
+
+logging:
+  level:
+    com.study.templateapi: info # tdo 패키지 수정

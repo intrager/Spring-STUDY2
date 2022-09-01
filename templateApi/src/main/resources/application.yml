@@ -1,5 +1,5 @@
 server:
-  port: 8081
+  port: 8080
   servlet:
     context-path: /
 
@@ -25,6 +25,15 @@ spring:
     multipart:
       max-file-size: 10MB # 파일 업로드 요청 시 하나의 파일 크기를 10MB 제한
       max-request-size: 100MB # 파일 업로드 요청 시 모든 파일 크기합을 100MB 제한
+
 logging:
   level:
     org.hibernate.type: trace # 콘솔창에다가 조건에 바인딩되는 값 과 조회 결과 출력
+    com.study.templateapi: debug # todo 패키지 수정
+
+feign:
+  client:
+    config:
+      default:
+        connectTimeout: 5000
+        readTimeout: 5000
