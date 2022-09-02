@@ -19,12 +19,12 @@ public class HealthCheckController {
 
     @GetMapping("/health")
     public ResponseEntity<HealthCheckResponseDto> checkHealth() {
-//
-//        try {
-//            Thread.sleep(6000);
-//        } catch (InterruptedException e) {
-//            e.printStackTrace();
-//        }
+
+        try {
+            Thread.sleep(6000);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
 
         HealthCheckResponseDto healthCheckResponseDto = HealthCheckResponseDto.builder()
                 .health("ok")
