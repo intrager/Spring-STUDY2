@@ -26,6 +26,11 @@ spring:
       max-file-size: 10MB # 파일 업로드 요청 시 하나의 파일 크기를 10MB 제한
       max-request-size: 100MB # 파일 업로드 요청 시 모든 파일 크기합을 100MB 제한
 
+  mvc:
+    pathmatch:
+      matching-strategy: ant_path_matcher
+
+
 logging:
   level:
     org.hibernate.type: trace # 콘솔창에다가 조건에 바인딩되는 값 과 조회 결과 출력
@@ -40,11 +45,11 @@ feign:
 
 kakao:
   client:
-    id: ENC(omnPcyt8V0NRme/SyBG/kToA9IpZYE6XQ2IT1YkEDaRf3BD/oTnGaZhjiyTMHcfr)
-    secret: ENC(zOGOA7SYq6mlT9d8mY6yvrGnY9Y3zxZ8p8NYpsXQG+3PA2txthfG8hUm947etale)
+    id: ENC(vUEX/w9ssCT1bQ5w+OtsveJLrX97TvE9yLGS3Z/qlzuc8whJiOgHF8YSCeF5A43i)
+    secret: ENC(uhJlIKVilSFdRjFc42fDMF0CpGH9KlRAj4mKJI/06K/VcCDhj/XQdj7AfPwqfJw8)
 
 token:
-  secret: ENC(XfSdS3VMA5nR6YR5ri87fuA+nCrxfHY/MogKd1PBXZsuq1wXH/n1WrL7LLVIVuMj) # 임의의 문자열
+  secret: ENC(4V5tXMheEVwg7I7YpCawH+omAoO86xQXQp6Xu72+trS8lALvXn3ZEQ==) # 임의의 문자열
   access-token-expiration-time: 900000 # 15분 1000(ms) * 60(s) * 15(m)
   refresh-token-expiration-time: 1209600000 # 2주 1000(ms) * 60(s) * 60(m) * 24(h) * 14(d)
 

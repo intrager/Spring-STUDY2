@@ -1,0 +1,17 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org"
+	  xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+	layout:decorate="~{layouts/main}">
+<head>
+	<title>Home</title>
+	<meta charset="UTF-8">
+	<link rel="stylesheet" th:href="@{/css/style.css}">
+</head>
+<body>
+<!-- 대체하고 싶은 요소에 layout:fragment 속성을 부여한다.-->
+	<div layout:fragment="content">
+		<h1 th:text="#{common.homeWelcome}"></h1>
+		<p th:text="${serverTime}">시간 표시</p>
+	</div>
+</body>
+</html>
