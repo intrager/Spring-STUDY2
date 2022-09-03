@@ -38,6 +38,8 @@ dependencies {
     implementation 'com.github.ulisesbocchio:jasypt-spring-boot-starter:3.0.4'
     // Swagger API 명세서
     implementation 'io.springfox:springfox-boot-starter:3.0.0'
+    // XSS
+    implementation 'com.navercorp.lucy:lucy-xss-servlet:2.0.0'
 }
 
 dependencyManagement {
