@@ -1,5 +1,6 @@
 package com.study.templateapi.global.config.web;
 
+import com.study.templateapi.global.interceptor.AdminAuthorizationInterceptor;
 import com.study.templateapi.global.interceptor.AuthenticationInterceptor;
 import com.study.templateapi.global.resolver.memberinfo.MemberInfoArgumentResolver;
 import lombok.RequiredArgsConstructor;
@@ -18,6 +19,7 @@ public class WebConfig implements WebMvcConfigurer {
 
     private final AuthenticationInterceptor authenticationInterceptor;
     private final MemberInfoArgumentResolver memberInfoArgumentResolver;
+    private final AdminAuthorizationInterceptor adminAuthorizationInterceptor;
 
     @Override
     public void addCorsMappings(CorsRegistry registry) {
@@ -43,6 +45,9 @@ public class WebConfig implements WebMvcConfigurer {
                         "/api/access-token/issue",
                         "/api/logout",
                         "/api/health");  // 인증 인터셉터를 동작시키지 않을 예외 uri
+        registry.addInterceptor(adminAuthorizationInterceptor)
+                .order(2)   // 순서는 인증 Interceptor 다음에 동작
+                .addPathPatterns("/api/admin/**");   // /api/admin 아래 들어오는 것들에 대해서 인가 인터셉터 동작
     }
 
     @Override
