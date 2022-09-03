@@ -5,6 +5,7 @@ import com.study.templateapi.domain.member.repository.MemberRepository;
 import com.study.templateapi.global.error.ErrorCode;
 import com.study.templateapi.global.error.exception.AuthenticationException;
 import com.study.templateapi.global.error.exception.BusinessException;
+import com.study.templateapi.global.error.exception.EntityNotFoundException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -45,5 +46,10 @@ public class MemberService {
         }
         return member;
 
+    }
+
+    public Member findMemberByMemberId(Long memberId) {
+        return memberRepository.findById(memberId)
+                .orElseThrow(() -> new EntityNotFoundException(ErrorCode.MEMBER_NOT_EXISTS));
     }
 }
