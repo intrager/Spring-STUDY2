@@ -4,6 +4,7 @@ import com.study.templateapi.api.login.dto.OauthLoginDto;
 import com.study.templateapi.api.login.service.OauthLoginService;
 import com.study.templateapi.api.login.validate.OauthValidator;
 import com.study.templateapi.domain.member.constant.MemberType;
+import com.study.templateapi.global.util.AuthorizationHeaderUtils;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -24,7 +25,7 @@ public class OauthLoginController {
     public ResponseEntity<OauthLoginDto.Response> oauthLogin(@RequestBody OauthLoginDto.Request oauthLoginRequestDto,
                                                              HttpServletRequest httpServletRequest) {
         String authorizationHeader = httpServletRequest.getHeader("Authorization");
-        oauthValidator.validateAuthorization(authorizationHeader);
+        AuthorizationHeaderUtils.validateAuthorization(authorizationHeader);
         oauthValidator.validMemberType(oauthLoginRequestDto.getMemberType());
 
         String accessToken = authorizationHeader.split(" ")[1];
