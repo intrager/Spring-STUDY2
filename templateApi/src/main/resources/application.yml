@@ -40,10 +40,13 @@ feign:
 
 kakao:
   client:
-    id: 4a38ca0b4d89475339d0decf46428bcb
-    secret: nuYCa2Fu41iv1u3dGpP5qy0oVCmIg6eJ
+    id: ENC(omnPcyt8V0NRme/SyBG/kToA9IpZYE6XQ2IT1YkEDaRf3BD/oTnGaZhjiyTMHcfr)
+    secret: ENC(zOGOA7SYq6mlT9d8mY6yvrGnY9Y3zxZ8p8NYpsXQG+3PA2txthfG8hUm947etale)
 
 token:
-  secret: Fi8dVWNJXW8fNTEbk9n9MAU72EPZZgE3Ogq # 임의의 문자열
+  secret: ENC(XfSdS3VMA5nR6YR5ri87fuA+nCrxfHY/MogKd1PBXZsuq1wXH/n1WrL7LLVIVuMj) # 임의의 문자열
   access-token-expiration-time: 900000 # 15분 1000(ms) * 60(s) * 15(m)
   refresh-token-expiration-time: 1209600000 # 2주 1000(ms) * 60(s) * 60(m) * 24(h) * 14(d)
+
+jasypt:
+  password: ${PASSWORD}
