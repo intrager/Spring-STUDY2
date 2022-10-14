@@ -39,7 +39,8 @@ public class AccountController {
         if(errors.hasErrors()) { // InitBinder로 설정하면 SignUpForm 타입 그대로 따라감
             return "account/sign-up"; // 303 검증도 하고 validator도 사용됨
         }
-        accountService.processNewAccount(signUpForm);
+        Account account = accountService.processNewAccount(signUpForm);
+        accountService.login(account);
         return "redirect:/";
     }
 
@@ -51,12 +52,13 @@ public class AccountController {
             model.addAttribute("error", "wrong.email");
             return view;
         }
-        if (!account.getEmailCheckToken().equals(token)) { //account에 있는 거랑 내가 받아온 토큰이랑 같지 않다면
+        if (!account.isValidToken(token)) { //account에 있는 거랑 내가 받아온 토큰이랑 같지 않다면
             model.addAttribute("error", "wrong.token");
             return view;
         }
 
         account.completeSignUp();
+        accountService.login(account);
         model.addAttribute("numberOfUser", accountRepository.count());
         model.addAttribute("nickname", account.getNickname());
         return view;

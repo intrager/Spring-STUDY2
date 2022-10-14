@@ -16,6 +16,8 @@ import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.BDDMockito.then;
 import static org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors.csrf;
+import static org.springframework.security.test.web.servlet.response.SecurityMockMvcResultMatchers.authenticated;
+import static org.springframework.security.test.web.servlet.response.SecurityMockMvcResultMatchers.unauthenticated;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
@@ -26,7 +28,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @AutoConfigureMockMvc
 class AccountControllerTest {
     @Autowired
-    private MockMvc mockMvc;
+    private MockMvc mockMvc; // Security를 쓸 때 궁합이 좋음
 
     @Autowired
     private AccountRepository accountRepository;
@@ -35,16 +37,16 @@ class AccountControllerTest {
     JavaMailSender javaMailSender;
 
     @DisplayName("인증 메일 확인 - 입력값 오류")
-    @Test
+    @Test // 인증이 된 사용자냐 아니냐
     void checkEmailToken_with_wrong_input() throws Exception {
         mockMvc.perform(get("/check-email-token")
                 .param("token", "wjdtncnldjqtjdrhd")
                 .param("email", "email@email.com"))
                 .andExpect(status().isOk()) // 위와 같은 값에 해당하는 게 없음
                 .andExpect(model().attributeExists("error"))
-                .andExpect(view().name("account/checked-email"));
+                .andExpect(view().name("account/checked-email"))
+                .andExpect(unauthenticated());
     }
-
 
     @DisplayName("인증 메일 확인 - 입력값 정상")
     @Test
@@ -64,7 +66,8 @@ class AccountControllerTest {
                 .andExpect(model().attributeDoesNotExist("error"))
                 .andExpect(model().attributeExists("nickname"))
                 .andExpect(model().attributeExists("numberOfUser"))
-                .andExpect(view().name("account/checked-email"));
+                .andExpect(view().name("account/checked-email"))
+                .andExpect(authenticated().withUsername("bruce")); // bruce라는 이름으로 인증이 되어있는지
     }
 
     @DisplayName("회원 가입 화면 보이는지 테스트")
@@ -74,7 +77,8 @@ class AccountControllerTest {
                 .andDo(print()) // 응답을 볼 수 있음
                 .andExpect(status().isOk())
                 .andExpect(view().name("account/sign-up"))
-                .andExpect(model().attributeExists("signUpForm"));
+                .andExpect(model().attributeExists("signUpForm"))
+                .andExpect(unauthenticated());
     } // 타임리프이기 때문에, 뷰 렌더링을 실제 서블릿 컨테이너가 하지 않고 뷰 생성을 다 해서 응답을 보내줌(뷰까지도 테스트가 가능)
 
     @DisplayName("회원 가입 처리 - 입력값 오류")
@@ -86,7 +90,8 @@ class AccountControllerTest {
                 .param("password", "12345")
                 .with(csrf())) // 폼을 보내는 테스트는 반드시 csrf()를 끼워서 넣어주자
                 .andExpect(status().isOk())
-                .andExpect(view().name("account/sign-up"));
+                .andExpect(view().name("account/sign-up"))
+                .andExpect(unauthenticated());
     }
 
     @DisplayName("회원 가입 처리 - 입력값 정상")
@@ -98,7 +103,8 @@ class AccountControllerTest {
                 .param("password", "1q2w3e4r!")
                 .with(csrf()))
                 .andExpect(status().is3xxRedirection())
-                .andExpect(view().name("redirect:/"));
+                .andExpect(view().name("redirect:/"))
+                .andExpect(authenticated().withUsername("bruce"));
 
         Account account = accountRepository.findByEmail("han@induk.ac.kr");
 
@@ -107,5 +113,4 @@ class AccountControllerTest {
         assertNotNull(account.getEmailCheckToken());
         then(javaMailSender).should().send(any(SimpleMailMessage.class)); // 아무 타입을 가지고 send()가 호출되는가
     }
-
 }
