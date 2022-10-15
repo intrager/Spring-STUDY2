@@ -55,7 +55,7 @@ public class AccountService {
 
     public void login(Account account) {
         UsernamePasswordAuthenticationToken token = new UsernamePasswordAuthenticationToken(
-                account.getNickname(),
+                new UserAccount(account), // 로그인 했으면 이 생성된 객체가 인증된 principal 로 간주됨
                 account.getPassword(),
                 List.of(new SimpleGrantedAuthority("ROLE_USER"))); // 권한 목록을 받아줌
         SecurityContextHolder.getContext().setAuthentication(token);
