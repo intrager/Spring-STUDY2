@@ -9,6 +9,9 @@ import org.springframework.security.authentication.UsernamePasswordAuthenticatio
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.context.SecurityContext;
 import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.core.userdetails.UserDetailsService;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -17,7 +20,7 @@ import java.util.List;
 
 @Service
 @RequiredArgsConstructor
-public class AccountService {
+public class AccountService implements UserDetailsService {
 
     private final AccountRepository accountRepository;
     private final JavaMailSender javaMailSender;
@@ -60,4 +63,18 @@ public class AccountService {
                 List.of(new SimpleGrantedAuthority("ROLE_USER"))); // 권한 목록을 받아줌
         SecurityContextHolder.getContext().setAuthentication(token);
     } // 인코딩한 password로밖에 접근을 못하기 때문에 정석적이지 않은, AuthenticationManager 방법으로 작성
+
+    @Override
+    public UserDetails loadUserByUsername(String emailOrNickname) throws UsernameNotFoundException {
+        Account account = accountRepository.findByEmail(emailOrNickname);
+        if(account == null) {
+            account = accountRepository.findByNickname(emailOrNickname);
+        }
+        if(account == null) {
+            // 여기에 해당하는 유저가 없다 -> 이메일 혹은 패스워드가 잘못됐다고 리턴하면 됨 -> 메세지를 보여줄 것
+            throw new UsernameNotFoundException(emailOrNickname);
+        }
+        // principal에 해당하는 객체를 넣어주면 됨
+        return new UserAccount(account);
+    }
 }
