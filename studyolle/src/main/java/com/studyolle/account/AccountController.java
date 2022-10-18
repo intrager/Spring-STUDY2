@@ -77,7 +77,6 @@ public class AccountController {
             model.addAttribute("email", account.getEmail());
             return "account/check-email";
         }
-
         // 보낼 수 있다면
         accountService.sendSignUpConfirmEmail(account);
         return "redirect:/";
@@ -89,7 +88,6 @@ public class AccountController {
         if(nickname == null) {
             throw new IllegalArgumentException(nickname + "에 해당하는 사용자가 없습니다.");
         }
-
         model.addAttribute(byNickname);
         model.addAttribute("isOwner", byNickname.equals(account));
         return "account/profile";
