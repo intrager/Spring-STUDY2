@@ -17,20 +17,20 @@ import javax.validation.Valid;
 @RequiredArgsConstructor
 public class SettingsController {
 
-    private static final String SETTINGS_PROFILE_VIEW_NAME = "settings/profile";
-    private static final String SETTINGS_PROFILE_URL = "/settings/profile";
+    static final String SETTINGS_PROFILE_VIEW_NAME = "settings/profile";
+    static final String SETTINGS_PROFILE_URL = "/settings/profile";
 
     private final AccountService accountService;
 
     @GetMapping(SETTINGS_PROFILE_URL)
     public String profileUpdateForm(@CurrentUser Account account, Model model) {
-        model.addAttribute(account);
+        model.addAttribute(account); // 현재 사용자에 대한 정보를 모델에 넣어줌
         model.addAttribute(new Profile(account)); // 채울 때 account에 있는 정보 조회해서 채워야 함
 
         return SETTINGS_PROFILE_VIEW_NAME;
     }
 
-    @PostMapping(SETTINGS_PROFILE_URL)
+    @PostMapping(SETTINGS_PROFILE_URL) // 위에서 넣은 정보를 수정하는 기능
     public String updateProfile(@CurrentUser Account account, @Valid Profile profile, Errors errors,
                                 Model model, RedirectAttributes attributes) {
         if(errors.hasErrors()) {
