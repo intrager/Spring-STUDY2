@@ -23,13 +23,20 @@ public class SettingsController {
     public void initBinder(WebDataBinder webDataBinder) {
         // PasswordFormValidator은 빈을 굳이 사용할 필요가 없으므로 new로 생성 후 사용 가능
         webDataBinder.addValidators(new PasswordFormValidator());
-    }
+    } // InitBinder가 더 필요하면 그냥 InitBinder 메서드 더 만들면 됨
 
+
+    // 프로필
     static final String SETTINGS_PROFILE_VIEW_NAME = "settings/profile";
     static final String SETTINGS_PROFILE_URL = "/settings/profile";
 
+    // 패스워드
     static final String SETTINGS_PASSWORD_VIEW_NAME = "settings/password";
     static final String SETTINGS_PASSWORD_URL = "/settings/password";
+
+    // 알림
+    static final String SETTINGS_NOTIFICATIONS_VIEW_NAME = "settings/notifications";
+    static final String SETTINGS_NOTIFICATIONS_URL = "/settings/notifications";
 
     private final AccountService accountService;
 
@@ -71,5 +78,25 @@ public class SettingsController {
         accountService.updatePassword(account, passwordForm.getNewPassword());
         attributes.addFlashAttribute("message", "패스워드가 정상적으로 변경되었습니다.");
         return "redirect:" + SETTINGS_PASSWORD_URL;
+    }
+
+    @GetMapping(SETTINGS_NOTIFICATIONS_URL)
+    public String updateNotificationsForm(@CurrentUser Account account, Model model) {
+        model.addAttribute(account);
+        model.addAttribute(new Notifications(account));
+        return SETTINGS_NOTIFICATIONS_VIEW_NAME;
+    }
+
+    @PostMapping(SETTINGS_NOTIFICATIONS_URL)
+    public String updateNotifications(@CurrentUser Account account, @Valid Notifications notifications, Errors errors,
+                                      Model model, RedirectAttributes attributes) {
+        if(errors.hasErrors()) {
+            model.addAttribute(account);
+            return SETTINGS_NOTIFICATIONS_VIEW_NAME;
+        }
+
+        accountService.updateNotifications(account, notifications);
+        attributes.addFlashAttribute("message", "알림 설정을 변경했습니다.");
+        return "redirect:" + SETTINGS_NOTIFICATIONS_URL;
     }
 }

@@ -45,15 +45,15 @@ public class Account {
 
     private boolean studyCreatedByEmail; // 스터디가 만들어졌다는 걸 이메일로 받을 것인가
 
-    private boolean studyCreatedByWeb; // 스터디가 만들어졌다는 걸 웹으로 받을 것인가
+    private boolean studyCreatedByWeb = true; // 스터디가 만들어졌다는 걸 웹으로 받을 것인가
 
     private boolean studyEnrollmentResultByEmail; // 스터디 가입 신청 결과를 이메일로 받을 것인가
 
-    private boolean studyEnrollmentResultByWeb;
+    private boolean studyEnrollmentResultByWeb = true;
 
     private boolean studyUpdatedByEmail;
 
-    private boolean studyUpdatedByWeb;
+    private boolean studyUpdatedByWeb = true;
 
     public void generateEmailCheckToken() {
         this.emailCheckToken = UUID.randomUUID().toString();
