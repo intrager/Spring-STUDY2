@@ -90,9 +90,7 @@ public class AccountService implements UserDetailsService {
         account.setOccupation(profile.getOccupation());
         account.setLocation(profile.getLocation());
         account.setBio(profile.getBio());
-        // TODO 프로필 이미지
+        account.setProfileImage(profile.getProfileImage());
         accountRepository.save(account); // save 구현체 안에서 id값이 있는지 없는지 확인 후 있으면 merge, 즉 기존 데이터를 업데이트
-
-        // TODO 문제가 하나 더 남음.
     }
 }
