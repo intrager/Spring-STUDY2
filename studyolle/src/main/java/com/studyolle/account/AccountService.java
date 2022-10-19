@@ -93,4 +93,9 @@ public class AccountService implements UserDetailsService {
         account.setProfileImage(profile.getProfileImage());
         accountRepository.save(account); // save 구현체 안에서 id값이 있는지 없는지 확인 후 있으면 merge, 즉 기존 데이터를 업데이트
     }
+
+    public void updatePassword(Account account, String newPassword) {
+        account.setPassword(passwordEncoder.encode(newPassword)); // 이때까지 변경이력을 추적하지 않음
+        accountRepository.save(account);   // 명시적으로 merge
+    }
 }
