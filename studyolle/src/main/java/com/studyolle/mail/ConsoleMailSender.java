@@ -11,7 +11,7 @@ import org.springframework.stereotype.Component;
 import javax.mail.internet.MimeMessage;
 import java.io.InputStream;
 
-@Profile("local") // spring.profiles.active로 빈이 등록되도록 함
+@Profile({"local", "dev"}) // spring.profiles.active로 빈이 등록되도록 함
 @Component
 @Slf4j
 public class ConsoleMailSender implements JavaMailSender {
