@@ -7,7 +7,7 @@
 	<div class="container">
 		<div class="row mt-5 justify-content-center">
 			<div class="col-2">
-				<div th:replace="fragments.html :: settings-menu(currentMenu='tags')"></div>
+				<div th:replace="fragments.html :: settings-menu(currentMenu='zones')"></div>
 			</div>
 			<div class="col-8">
 				<div class="row">
@@ -20,30 +20,32 @@
 							또는 엔터를 입력하세요.
 						</div>
 						<div id="whitelist" th:text="${whitelist}" hidden></div>
-						<input id="tags" type="text" name="tags" th:value="${#strings.listJoin(tags, ',')}"
-							   class="tagify-outside" aria-describedby="tagHelp" />
+						<input id="zones" type="text" name="zones" th:value="${#strings.listJoin(zones, ',')}"
+							   class="tagify-outside" aria-describedby="zoneHelp" />
 					</div>
 				</div>
 			</div>
 		</div>
 	</div>
 	<script src="/node_modules/@yaireo/tagify/dist/tagify.min.js"></script>
-<script th:replace="fragments.html :: ajax-csrf-header"></script>
-	<script type="application/javascript" th:inline="javascript">
+	<script th:replace="fragments.html :: ajax-csrf-header"></script>
+	<script type="application/javascript">
 		$(function() {
-            function tagRequest(url, tagTitle) {
+            function tagRequest(url, zoneName) {
                 $.ajax({
-                    dataType: "json",
+                    dataType: "text",
                     autocomplete: {
                         enabled: true,
                         rightKey: true,
                     },
 					contentType: "application/json; charset=utf-8",
 					method: "POST",
-					url: "/settings/tags" + url,
-                    data: JSON.stringify({'tagTitle': tagTitle})
+					url: "/settings/zones" + url,
+                    data: JSON.stringify({'zoneName': zoneName})
 				}).done(function (data, status) {
-                    console.log("${data} and status is ${status}");
+                    console.log(`${data} and status is ${status}`);
+				}).fail(function (e) {
+                    console.log("fail:" + e);
 				});
 			}
 
@@ -54,7 +56,7 @@
                 tagRequest("/remove", e.detail.data.value);
 			}
 
-            var tagInput = document.querySelector("#tags");
+            var tagInput = document.querySelector("#zones");
             var tagify = new Tagify(tagInput, {
                 pattern: /^.{0,20}$/,
                 whitelist: JSON.parse(document.querySelector("#whitelist").textContent),
