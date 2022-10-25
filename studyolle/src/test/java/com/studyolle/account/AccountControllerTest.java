@@ -1,6 +1,8 @@
 package com.studyolle.account;
 
 import com.studyolle.domain.Account;
+import com.studyolle.mail.EmailMessage;
+import com.studyolle.mail.EmailService;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -34,7 +36,7 @@ class AccountControllerTest {
     private AccountRepository accountRepository;
 
     @MockBean
-    JavaMailSender javaMailSender;
+    EmailService emailService;
 
     @DisplayName("인증 메일 확인 - 입력값 오류")
     @Test // 인증이 된 사용자냐 아니냐
@@ -111,6 +113,6 @@ class AccountControllerTest {
         assertNotNull(account);
         assertNotEquals(account.getPassword(), "1q2w3e4r!");
         assertNotNull(account.getEmailCheckToken());
-        then(javaMailSender).should().send(any(SimpleMailMessage.class)); // 아무 타입을 가지고 send()가 호출되는가
+        then(emailService).should().sendEmail(any(EmailMessage.class)); // 아무 타입을 가지고 send()가 호출되는가
     }
 }
