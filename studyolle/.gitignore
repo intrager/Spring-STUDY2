@@ -34,4 +34,6 @@ build/
 
 ### NPM ###
 src/main/resources/static/node_modules
-src/main/resources/static/node
+
+### PROPERTIES ###
+src/main/resources/static/nodeapplication-dev.properties

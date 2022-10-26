@@ -40,10 +40,9 @@ public class AccountService implements UserDetailsService {
     private final TemplateEngine templateEngine;
     private final AppProperties appProperties;
 
-
     public Account processNewAccount(SignUpForm signUpForm) {
         Account newAccount = saveNewAccount(signUpForm); //위에 @Transactional을 안 붙이면 save 후로 detached 상태가 됨
-        sendSignUpConfirmEmail(newAccount); // 메세지 보내기
+        sendSignUpConfirmEmail(newAccount); // 메세지 보내기, 이 부분은 오류나면 롤백됨. 새로운 유저는 저장 안 됨
         return newAccount;
     } // Persist상태의 객체는 트랜잭션이 종료될 때 상태를 DB에 Sink함
 
@@ -169,5 +168,13 @@ public class AccountService implements UserDetailsService {
     public void removeZone(Account account, Zone zone) {
         Optional<Account> byId = accountRepository.findById(account.getId());
         byId.ifPresent(a -> a.getZones().remove(zone));
+    }
+
+    public Account getAccount(String nickname) {
+        Account account = accountRepository.findByNickname(nickname);
+        if(account == null) {
+            throw new IllegalArgumentException(nickname + "에 해당하는 사용자가 없습니다.");
+        }
+        return account;
     }
 }
