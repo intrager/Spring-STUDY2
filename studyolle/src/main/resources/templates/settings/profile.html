@@ -130,11 +130,16 @@
                     const reader = new FileReader(); // 읽어올 수 있는 리더기 생성
                     reader.onload = e => {
                         if(e.target.result) { // 파일 가져와졌으면
+                            if(!e.target.result.startsWith("data:image")) {
+								alert("이미지 파일을 선택하세요");
+                                return;
+							}
+
                             // 이미지 만들어서 데이터를 채워넣고
                             let img = document.createElement("img");
                             img.id = 'new-profile';
                             img.src = e.target.result;
-                            img.width = 250;
+                            img.setAttribute('width', '100%');
 
                             $newProfileImage.html(img); // 새로운 이미지 태그 추가
                             $newProfileImage.show(); // 새로 영역 보여주고

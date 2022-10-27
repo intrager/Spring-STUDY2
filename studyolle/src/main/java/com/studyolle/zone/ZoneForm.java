@@ -1,4 +1,4 @@
-package com.studyolle.settings.form;
+package com.studyolle.zone;
 
 import com.studyolle.domain.Zone;
 import lombok.Data;
@@ -6,7 +6,6 @@ import lombok.Data;
 @Data
 public class ZoneForm {
 
-    // TODO Seoul(서울)/None
     private String zoneName;
 
     public String getCityName() {

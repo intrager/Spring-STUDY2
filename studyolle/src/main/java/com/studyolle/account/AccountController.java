@@ -82,7 +82,7 @@ public class AccountController {
 
     @GetMapping("/profile/{nickname}")
     public String viewProfile(@PathVariable String nickname, Model model, @CurrentAccount Account account) {
-        Account accountToView = accountService.getAccount(nickname);
+        Account accountToView = accountService.getAccount(nickname); // persist 상태
         model.addAttribute(accountToView);
         model.addAttribute("isOwner", accountToView.equals(account)); // 보려는 view가 현재 사용자와 일치하는지
         return "account/profile";
