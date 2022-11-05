@@ -71,7 +71,7 @@ public class EventControllerTests {
                     .content(objectMapper.writeValueAsString(event))) // bean으로 등록 안 했지만 있는 것처럼 쓸 수 있음
                 .andDo(print()) // 실제 콘솔에서 어떤 요청과 응답을 받았는지 확인 가능
                 .andExpect(status().isCreated())
-                .andExpect(jsonPath("id").exists()) // "id"가 있는지 테스트
+                .andExpect(jsonPath("$.id").exists()) // "id"가 있는지 테스트
                 .andExpect(header().exists(HttpHeaders.LOCATION)) // type safe 하게 작성됨
                 .andExpect(header().string(HttpHeaders.CONTENT_TYPE, MediaTypes.HAL_JSON_VALUE))
                 .andExpect(jsonPath("free").value(false)) // type safe 하게 작성됨
@@ -84,7 +84,8 @@ public class EventControllerTests {
                         links(
                                 linkWithRel("self").description("link to self"),
                                 linkWithRel("query-events").description("link to query events"),
-                                linkWithRel("update-event").description("link to update an existing event")
+                                linkWithRel("update-event").description("link to update an existing event"),
+                                linkWithRel("profile").description("link to update an existing event")
                         ),
                         requestHeaders(
                                 headerWithName(HttpHeaders.ACCEPT).description("accept header"),
@@ -124,7 +125,8 @@ public class EventControllerTests {
                                 /* _link관련된 것들은 없앨 방법을 찾는 것도 추천? */
                                 fieldWithPath("_links.self.href").description("link to self"),
                                 fieldWithPath("_links.query-events.href").description("link to query event list"),
-                                fieldWithPath("_links.update-event.href").description("link to update existing event")
+                                fieldWithPath("_links.update-event.href").description("link to update existing event"),
+                                fieldWithPath("_links.profile.href").description("link to profile")
                         )
                 ));
    }
