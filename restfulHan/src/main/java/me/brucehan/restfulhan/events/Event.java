@@ -2,8 +2,10 @@ package me.brucehan.restfulhan.events;
 
 import lombok.*;
 
+import javax.persistence.*;
 import java.time.LocalDateTime;
 
+@Entity
 // lombok 어노테이션은 메타 어노테이션으로 못 만듦
 @Builder
 @Getter @Setter
@@ -14,6 +16,8 @@ import java.time.LocalDateTime;
 @EqualsAndHashCode(of = "id") // 연관관계도 of 안에 넣어버리면, 즉 다른 엔티티와의 묶음은 마찬가지로 상호참조 때문에 지양 -> Stack Overflow 가능성 있음
 @NoArgsConstructor @AllArgsConstructor
 public class Event {
+
+        @Id @GeneratedValue
         private Integer id;
         private String name;
         private String description;
@@ -27,5 +31,7 @@ public class Event {
         private int limitOfEnrollment;
         private boolean offline;
         private boolean free;
+
+        @Enumerated(EnumType.STRING)
         private EventStatus eventStatus;
 }
