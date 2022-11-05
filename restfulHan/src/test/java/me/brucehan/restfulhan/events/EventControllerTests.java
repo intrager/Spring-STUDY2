@@ -43,7 +43,7 @@ public class EventControllerTests {
         EventDto event = EventDto.builder()
                 .name("Spring")
                 .description("REST API Development with Spring")
-                .beginEnrollmentDateTime(LocalDateTime.of(2022, 11, 5, 11, 47))
+                .beginEnrollmentDateTime(LocalDateTime.of(2022, 11, 4, 11, 47))
                 .closeEnrollmentDateTime(LocalDateTime.of(2022, 11, 5, 11, 50))
                 .beginEventDateTime(LocalDateTime.of(2022, 11, 6, 9, 18))
                 .endEventDateTime(LocalDateTime.of(2022, 11, 7, 4, 23))
@@ -56,17 +56,20 @@ public class EventControllerTests {
 //        Mockito.when(eventRepository.save(event)).thenReturn(event);
 
         mockMvc.perform(post("/api/events/")
-                        .contentType(MediaType.APPLICATION_JSON_VALUE) // APPLICATION_JSON_UTF8
-                        .accept(MediaTypes.HAL_JSON) // 이 스펙이 준하는 응답을 보내겠다
-                        .content(objectMapper.writeValueAsString(event))) // bean으로 등록 안 했지만 있는 것처럼 쓸 수 있음
+                    .contentType(MediaType.APPLICATION_JSON_VALUE) // APPLICATION_JSON_UTF8
+                    .accept(MediaTypes.HAL_JSON) // 이 스펙이 준하는 응답을 보내겠다
+                    .content(objectMapper.writeValueAsString(event))) // bean으로 등록 안 했지만 있는 것처럼 쓸 수 있음
                 .andDo(print()) // 실제 콘솔에서 어떤 요청과 응답을 받았는지 확인 가능
                 .andExpect(status().isCreated())
                 .andExpect(jsonPath("id").exists()) // "id"가 있는지 테스트
                 .andExpect(header().exists(HttpHeaders.LOCATION)) // type safe 하게 작성됨
                 .andExpect(header().string(HttpHeaders.CONTENT_TYPE, MediaTypes.HAL_JSON_VALUE))
-                .andExpect(jsonPath("id").value(Matchers.not(100)))
-                .andExpect(jsonPath("free").value(Matchers.not(true))) // type safe 하게 작성됨
-                .andExpect(jsonPath("eventStatus").value(EventStatus.DRAFT.name()));
+                .andExpect(jsonPath("free").value(false)) // type safe 하게 작성됨
+                .andExpect(jsonPath("offline").value(true)) // type safe 하게 작성됨
+                .andExpect(jsonPath("eventStatus").value(EventStatus.DRAFT.name()))
+                .andExpect(jsonPath("_links.self").exists())
+                .andExpect(jsonPath("_links.query-events").exists())
+                .andExpect(jsonPath("_links.update-event").exists());
    }
 
     @Test
