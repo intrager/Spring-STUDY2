@@ -5,12 +5,9 @@ import me.brucehan.restfulhan.common.TestDescription;
 import org.hamcrest.Matchers;
 import org.junit.Test;
 import org.junit.runner.RunWith;
-import org.mockito.Mockito;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
-import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.hateoas.MediaTypes;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
@@ -38,7 +35,6 @@ public class EventControllerTests {
 
     // Mapping jackson json이 의존성으로 들어가 있으면 Object Mapper를 자동으로 빈으로 등록해준다
     @Autowired ObjectMapper objectMapper;
-
 //    @MockBean EventRepository eventRepository; // mock이기 때문에 save를 해도 null을 리턴함
 
     @Test
@@ -120,19 +116,25 @@ public class EventControllerTests {
         EventDto eventDto = EventDto.builder()
                 .name("Spring")
                 .description("REST API Development with Spring")
-                .beginEnrollmentDateTime(LocalDateTime.of(2022, 11, 6, 11, 47))
-                .closeEnrollmentDateTime(LocalDateTime.of(2022, 11, 5, 11, 50))
-                .beginEventDateTime(LocalDateTime.of(2022, 11, 4, 9, 18))
-                .endEventDateTime(LocalDateTime.of(2022, 11, 3, 4, 23))
+                .beginEnrollmentDateTime(LocalDateTime.of(2022, 11, 3, 11, 47))
+                .closeEnrollmentDateTime(LocalDateTime.of(2022, 11, 4, 11, 50))
+                .beginEventDateTime(LocalDateTime.of(2022, 11, 5, 9, 18))
+                .endEventDateTime(LocalDateTime.of(2022, 11, 6, 4, 23))
                 .basePrice(10000)
                 .maxPrice(200)
                 .limitOfEnrollment(100)
                 .location("hong-dae")
                 .build();
 
-        this.mockMvc.perform(post("/api/events")
-                        .contentType(MediaType.APPLICATION_JSON_VALUE)
-                        .content(this.objectMapper.writeValueAsString(eventDto)))
-                .andExpect(status().isBadRequest());
+            this.mockMvc.perform(post("/api/events")
+                .contentType(MediaType.APPLICATION_JSON_VALUE)
+                .content(this.objectMapper.writeValueAsString(eventDto)))
+                    .andDo(print())
+                .andExpect(status().isBadRequest())
+                .andExpect(jsonPath("$[0].objectName").exists())
+                .andExpect(jsonPath("$[0].field").exists()) // 어떤 필드에서 발생한 에러인지
+                .andExpect(jsonPath("$[0].defaultMessage").exists()) // 기본 메시지는 무엇이고
+                .andExpect(jsonPath("$[0].code").exists()) // 에러 코드는 무엇이었는지
+                .andExpect(jsonPath("$[0].rejectedValue").exists()); // 입력을 거절당한 그 값이 무엇인지
     }
 }

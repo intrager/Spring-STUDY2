@@ -30,12 +30,12 @@ public class EventController {
     @PostMapping
     public ResponseEntity createEvent(@RequestBody @Valid EventDto eventDto, Errors errors) {
         if(errors.hasErrors()) { // jsr 303
-            return ResponseEntity.badRequest().build();
+            return ResponseEntity.badRequest().body(errors); // body(errors) -> errors라는 객체를 json으로 그냥 변환할 수 없기 때문에 에러남
         }
 
         eventValidator.validate(eventDto, errors);
         if(errors.hasErrors()) {
-            return ResponseEntity.badRequest().build();
+            return ResponseEntity.badRequest().body(errors);
         }
 
         Event event = modelMapper.map(eventDto, Event.class);
