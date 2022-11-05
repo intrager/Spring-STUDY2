@@ -1,6 +1,7 @@
 package me.brucehan.restfulhan.events;
 
 import lombok.RequiredArgsConstructor;
+import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.hateoas.MediaTypes;
 import org.springframework.http.ResponseEntity;
@@ -23,9 +24,11 @@ public class EventController {
     생성자에 붙일 Autowired라는 애노테이션은 생략해도 됨 (after spring 4.3~)
     */
     private final EventRepository eventRepository;
+    private final ModelMapper modelMapper;
 
     @PostMapping
-    public ResponseEntity createEvent(@RequestBody Event event) {
+    public ResponseEntity createEvent(@RequestBody EventDto eventDto) {
+        Event event = modelMapper.map(eventDto, Event.class);
         Event newEvent = this.eventRepository.save(event);
         URI createdUri = linkTo(EventController.class).slash(newEvent.getId()).toUri();// id에 해당하는 링크 생성
         return ResponseEntity.created(createdUri).body(event);

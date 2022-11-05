@@ -5,6 +5,8 @@ import lombok.*;
 import javax.persistence.*;
 import java.time.LocalDateTime;
 
+import static me.brucehan.restfulhan.events.EventStatus.DRAFT;
+
 @Entity
 // lombok 어노테이션은 메타 어노테이션으로 못 만듦
 @Builder
@@ -33,5 +35,5 @@ public class Event {
         private boolean free;
 
         @Enumerated(EnumType.STRING)
-        private EventStatus eventStatus;
+        private EventStatus eventStatus = DRAFT;
 }
