@@ -17,12 +17,8 @@ import org.springframework.stereotype.Controller;
 import org.springframework.validation.Errors;
 import org.springframework.web.bind.annotation.*;
 
-import javax.annotation.Resource;
-import javax.management.relation.Relation;
 import javax.validation.Valid;
 import java.net.URI;
-import java.util.Arrays;
-import java.util.List;
 import java.util.Optional;
 
 import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.linkTo;

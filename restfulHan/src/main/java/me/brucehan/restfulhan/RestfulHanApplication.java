@@ -11,9 +11,4 @@ public class RestfulHanApplication {
     public static void main(String[] args) {
         SpringApplication.run(RestfulHanApplication.class, args);
     }
-
-    @Bean
-    public ModelMapper modelMapper() {
-        return new ModelMapper();
-    }
 }
