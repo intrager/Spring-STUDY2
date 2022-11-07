@@ -1,8 +1,10 @@
 package me.brucehan.restfulhan.configs;
 
 import me.brucehan.restfulhan.accounts.Account;
+import me.brucehan.restfulhan.accounts.AccountRepository;
 import me.brucehan.restfulhan.accounts.AccountRole;
 import me.brucehan.restfulhan.accounts.AccountService;
+import me.brucehan.restfulhan.common.AppProperties;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.ApplicationArguments;
@@ -29,17 +31,24 @@ public class AppConfig {
     @Bean
     public ApplicationRunner applicationRunner() {
         return new ApplicationRunner() {
-
             @Autowired AccountService accountService;
+            @Autowired AppProperties appProperties;
 
             @Override
             public void run(ApplicationArguments args) throws Exception {
-                Account bruce = Account.builder()
-                        .email("bruce@email.com")
-                        .password("bruce")
+                Account admin = Account.builder()
+                        .email(appProperties.getAdminUsername())
+                        .password(appProperties.getAdminPassword())
                         .roles(Set.of(AccountRole.ADMIN, AccountRole.USER))
                         .build();
-                accountService.saveAccount(bruce);
+                accountService.saveAccount(admin);
+
+                Account user = Account.builder()
+                        .email(appProperties.getUserUsername())
+                        .password(appProperties.getUserPassword())
+                        .roles(Set.of(AccountRole.USER))
+                        .build();
+                accountService.saveAccount(user);
             }
         };
     }

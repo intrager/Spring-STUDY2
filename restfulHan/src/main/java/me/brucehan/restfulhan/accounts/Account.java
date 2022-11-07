@@ -15,7 +15,9 @@ public class Account {
     @Id @GeneratedValue
     private Integer id;
 
+    @Column(unique = true)
     private String email;
+
     private String password;
 
     @ElementCollection(fetch = FetchType.EAGER) // 하나의 enum만 있는 게 아니라 여러 개 enum을 가질 수 있으므로

@@ -1,6 +1,7 @@
 package me.brucehan.restfulhan.configs;
 
 import me.brucehan.restfulhan.accounts.AccountService;
+import me.brucehan.restfulhan.common.AppProperties;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -19,12 +20,14 @@ public class AuthServerConfig extends AuthorizationServerConfigurerAdapter {
     final AuthenticationManager authenticationManager;
     final AccountService accountService;
     final TokenStore tokenStore;
+    final AppProperties appProperties;
 
-    public AuthServerConfig(PasswordEncoder passwordEncoder, AuthenticationManager authenticationManager, AccountService accountService, TokenStore tokenStore) {
+    public AuthServerConfig(PasswordEncoder passwordEncoder, AuthenticationManager authenticationManager, AccountService accountService, TokenStore tokenStore, AppProperties appProperties) {
         this.passwordEncoder = passwordEncoder;
         this.authenticationManager = authenticationManager;
         this.accountService = accountService;
         this.tokenStore = tokenStore;
+        this.appProperties = appProperties;
     }
 
     @Override
@@ -35,10 +38,10 @@ public class AuthServerConfig extends AuthorizationServerConfigurerAdapter {
     @Override
     public void configure(ClientDetailsServiceConfigurer clients) throws Exception {
         clients.inMemory()
-                .withClient("qwer")
+                .withClient(appProperties.getClientId())
                 .authorizedGrantTypes("password", "refresh_token")
                 .scopes("read", "write")
-                .secret(this.passwordEncoder.encode("pass"))
+                .secret(this.passwordEncoder.encode(appProperties.getClientSecret()))
                 .accessTokenValiditySeconds(10 * 60)
                 .refreshTokenValiditySeconds(6 * 10 * 60);
     }
