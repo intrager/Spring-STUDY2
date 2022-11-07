@@ -1,6 +1,7 @@
 package me.brucehan.restfulhan.events;
 
 import lombok.*;
+import me.brucehan.restfulhan.accounts.Account;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;
@@ -35,6 +36,9 @@ public class Event {
 
     @Enumerated(EnumType.STRING)
     private EventStatus eventStatus = DRAFT;
+
+    @ManyToOne
+    private Account manager;
 
     public void update() {
         // update free
