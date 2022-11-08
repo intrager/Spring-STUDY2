@@ -1,24 +1,19 @@
 package me.brucehan.restfulhan.configs;
 
-import me.brucehan.restfulhan.accounts.Account;
-import me.brucehan.restfulhan.accounts.AccountRole;
 import me.brucehan.restfulhan.accounts.AccountService;
 import me.brucehan.restfulhan.common.AppProperties;
-import me.brucehan.restfulhan.common.BaseControllerTest;
+import me.brucehan.restfulhan.common.BaseTest;
 import me.brucehan.restfulhan.common.TestDescription;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 
-import java.util.Set;
-
-import static org.junit.Assert.*;
 import static org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors.httpBasic;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
-public class AuthServerConfigTest extends BaseControllerTest {
+public class AuthServerConfigTest extends BaseTest {
     @Autowired AccountService accountService;
     @Autowired AppProperties appProperties;
 

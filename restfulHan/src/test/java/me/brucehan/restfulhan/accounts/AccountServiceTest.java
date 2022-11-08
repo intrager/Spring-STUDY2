@@ -1,29 +1,19 @@
 package me.brucehan.restfulhan.accounts;
 
-import org.hamcrest.Matchers;
-import org.junit.Rule;
-import org.junit.Test;
-import org.junit.rules.ExpectedException;
-import org.junit.runner.RunWith;
+import me.brucehan.restfulhan.common.BaseTest;
+import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
-import org.springframework.test.context.ActiveProfiles;
-import org.springframework.test.context.junit4.SpringRunner;
 
 import java.util.Set;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertThrows;
-import static org.junit.jupiter.api.Assertions.fail;
 
-@RunWith(SpringRunner.class)
-@SpringBootTest
-@ActiveProfiles("test")
-public class AccountServiceTest {
+public class AccountServiceTest extends BaseTest {
 //    @Rule public ExpectedException expectedException = ExpectedException.none(); -> Deprecated
 
     @Autowired AccountService accountService;
@@ -50,7 +40,7 @@ public class AccountServiceTest {
 
     @Test // (expected = UsernameNotFoundException.class) -> try ~ catch 대신 쓸 수는 있긴 함
     public void findByUsernameFail() {
-        assertThrows(UsernameNotFoundException.class, () -> accountService.loadUserByUsername("asdf@email.com"));
+        assertThrows(UsernameNotFoundException.class, () -> accountService.loadUserByUsername("bruce@email.com"));
         /*
             // given
             String username = "asdf@email.com";
