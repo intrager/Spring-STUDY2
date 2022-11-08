@@ -1,7 +1,9 @@
 package me.brucehan.restfulhan.events;
 
+import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import lombok.*;
 import me.brucehan.restfulhan.accounts.Account;
+import me.brucehan.restfulhan.accounts.AccountSerializer;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;
@@ -38,6 +40,7 @@ public class Event {
     private EventStatus eventStatus = DRAFT;
 
     @ManyToOne
+    @JsonSerialize(using = AccountSerializer.class)
     private Account manager;
 
     public void update() {
