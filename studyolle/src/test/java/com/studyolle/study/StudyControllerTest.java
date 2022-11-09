@@ -104,4 +104,50 @@ public class StudyControllerTest {
                 .andExpect(model().attributeExists("account"))
                 .andExpect(model().attributeExists("study"));
     }
+
+    @Test
+    @WithAccount("bruce")
+    @DisplayName("스터디 가입")
+    void joinStudy() throws Exception {
+        Account brucehan = createAccount("brucehan");
+        Study study = createStudy("test-study", brucehan);
+
+        mockMvc.perform(get("/study/" + study.getPath() + "/join"))
+                .andExpect(status().is3xxRedirection())
+                .andExpect(redirectedUrl("/study/" + study.getPath() + "/members"));
+
+        Account bruce = accountRepository.findByNickname("bruce");
+        assertTrue(study.getMembers().contains(bruce));
+    }
+
+    @Test
+    @WithAccount("bruce")
+    @DisplayName("스터디 탈퇴")
+    void leaveStudy() throws Exception {
+        Account brucehan = createAccount("brucehan");
+        Study study = createStudy("test-study", brucehan);
+
+        Account bruce = accountRepository.findByNickname("bruce");
+        studyService.addMember(study, bruce);
+
+        mockMvc.perform(get("/study/" + study.getPath() + "/leave"))
+                .andExpect(status().is3xxRedirection())
+                .andExpect(redirectedUrl("/study/" + study.getPath() + "/members"));
+        assertFalse(study.getMembers().contains(bruce));
+    }
+
+    protected Study createStudy(String path, Account manager) {
+        Study study = new Study();
+        study.setPath(path);
+        studyService.createNewStudy(study, manager);
+        return study;
+    }
+
+    protected Account createAccount(String nickname) {
+        Account brucehan = new Account();
+        brucehan.setNickname(nickname);
+        brucehan.setEmail(nickname + "@induk.ac.kr");
+        accountRepository.save(brucehan);
+        return brucehan;
+    }
 }

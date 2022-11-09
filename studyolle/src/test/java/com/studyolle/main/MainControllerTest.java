@@ -32,7 +32,7 @@ public class MainControllerTest {
     void beforeEach() {
         SignUpForm signUpForm = new SignUpForm();
         signUpForm.setNickname("bruce");
-        signUpForm.setEmail("admin@email.com");
+        signUpForm.setEmail("admin@induk.ac.kr");
         signUpForm.setPassword("1q2w3e4r!");
         accountService.processNewAccount(signUpForm);
     }
@@ -47,7 +47,7 @@ public class MainControllerTest {
     void login_with_email() throws Exception {
         // 스프링 시큐리티를 기본으로 쓰면, 기본적으로 CSRF라는 protection이 활성화됨. 테스트할 때 그 토큰을 넣어줌
         mockMvc.perform(post("/login")
-                .param("username", "admin@email.com")
+                .param("username", "admin@induk.ac.kr")
                 .param("password", "1q2w3e4r!")
                 .with(csrf()))
                 .andExpect(status().is3xxRedirection())
