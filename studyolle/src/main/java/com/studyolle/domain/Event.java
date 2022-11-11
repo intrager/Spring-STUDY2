@@ -8,6 +8,7 @@ import lombok.Setter;
 import javax.persistence.*;
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @NamedEntityGraph(
         //  event를 조회할 때 enrollments도 같이 읽어옴
@@ -95,5 +96,52 @@ public class Event {
 
     public long getNumberOfAcceptedEnrollments() {
         return this.enrollments.stream().filter(Enrollment::isAccepted).count();
+    }
+
+    public boolean isAbleToAcceptWaitingEnrollment() {
+        // 선착순 상태이면서 제한 인원을 넘지 않았으면 true
+        return this.eventType == EventType.FCFS && this.limitOfEnrollments > this.getNumberOfAcceptedEnrollments();
+    }
+
+    public void addEnrollment(Enrollment enrollment) {
+        this.enrollments.add(enrollment);
+        enrollment.setEvent(this);
+    }
+
+    public void removeEnrollment(Enrollment enrollment) {
+        this.enrollments.remove(enrollment);
+        enrollment.setEvent(null);
+    }
+
+    public void acceptNextWaitingEnrollment() {
+        // 참가가 확정 상태였던 사용자가 빠지면서 새로운 유저를 확정 상태로 만들어줌
+        if(this.isAbleToAcceptWaitingEnrollment()) {
+            Enrollment enrollmentToAccept = this.getTheFirstWaitingEnrollment();
+            if(enrollmentToAccept != null) {
+                enrollmentToAccept.setAccepted(true);
+            }
+        }
+    }
+
+    // 가장 첫번째로 대기중인 신청 가져옴
+    private Enrollment getTheFirstWaitingEnrollment() {
+        for(Enrollment e : this.enrollments) {
+            if(!e.isAccepted()) {
+                return e;
+            }
+        }
+        return null;
+    }
+
+    public void acceptWaitingList() {
+        if(this.isAbleToAcceptWaitingEnrollment()) {
+            var waitingList = getWaitingList();
+            int numberToAccept = (int) Math.min(this.limitOfEnrollments - this.getNumberOfAcceptedEnrollments(), waitingList.size());
+            waitingList.subList(0, numberToAccept).forEach(e -> e.setAccepted(true));
+        }
+    }
+
+    private List<Enrollment> getWaitingList() {
+        return this.enrollments.stream().filter(enrollment -> !enrollment.isAccepted()).collect(Collectors.toList());
     }
 }

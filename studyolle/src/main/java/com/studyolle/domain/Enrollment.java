@@ -4,10 +4,7 @@ import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.Setter;
 
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.Id;
-import javax.persistence.ManyToOne;
+import javax.persistence.*;
 import java.time.LocalDateTime;
 
 /**
@@ -24,10 +21,10 @@ public class Enrollment {
     private Long id;
 
     // enrollment에다가 event값을 어떻게 넣느냐에 따라 db에 반영됨
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     private Event event; // 관계의 주인
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     private Account account;
 
     /* 만약 풀방에서 인원 더 신청했는데,

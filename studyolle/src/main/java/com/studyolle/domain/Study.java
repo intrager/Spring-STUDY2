@@ -46,16 +46,16 @@ public class Study {
 
     private String shortDescription;
 
-    @Lob @Basic(fetch = FetchType.EAGER) // 스터디 정보 조회할 때 다 가져오도록 함
+    @Lob @Basic(fetch = FetchType.LAZY) // 스터디 정보 조회할 때 다 가져오도록 함
     private String fullDescription;
 
-    @Lob @Basic(fetch = FetchType.EAGER)
+    @Lob @Basic(fetch = FetchType.LAZY)
     private String image; // 프로필 이미지
 
-    @ManyToMany
+    @ManyToMany(fetch = FetchType.LAZY)
     private Set<Tag> tags = new HashSet<>();
 
-    @ManyToMany
+    @ManyToMany(fetch = FetchType.LAZY)
     private Set<Zone> zones = new HashSet<>();
 
     private LocalDateTime publishedDateTime;

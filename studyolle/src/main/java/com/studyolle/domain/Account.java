@@ -57,10 +57,10 @@ public class Account {
 
     private boolean studyUpdatedByWeb = true;
 
-    @ManyToMany
+    @ManyToMany(fetch = FetchType.LAZY)
     private Set<Tag> tags = new HashSet<>();
 
-    @ManyToMany
+    @ManyToMany(fetch = FetchType.LAZY)
     private Set<Zone> zones = new HashSet<>();
 
     public void generateEmailCheckToken() {
