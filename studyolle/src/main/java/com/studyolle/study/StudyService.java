@@ -37,9 +37,7 @@ public class StudyService {
 
     public Study getStudy(String path) {
         Study study = this.repository.findByPath(path);
-        if(study == null) { // 스터디가 없을 수도 있음
-            throw new IllegalArgumentException(path + "에 해당하는 스터디가 없습니다."); // Bad Request, 404
-        }
+        checkIfExistingStudy(path, study);
         return study;
     }
 

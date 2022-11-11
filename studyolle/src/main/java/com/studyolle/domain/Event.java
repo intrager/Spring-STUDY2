@@ -7,6 +7,7 @@ import lombok.Setter;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -50,13 +51,14 @@ public class Event {
     private Integer limitOfEnrollments; // null이 들어갈 수 있게끔
 
     @OneToMany(mappedBy = "event") // 이 연관관계는 event에서 하고 있다
-    private List<Enrollment> enrollments;
+    @OrderBy("enrolledAt")
+    private List<Enrollment> enrollments = new ArrayList<>();
 
     @Enumerated(EnumType.STRING)
     private EventType eventType;
 
     public boolean isEnrollableFor(UserAccount userAccount) {
-        return isNotClosed() && !isAlreadyEnrolled(userAccount);
+        return isNotClosed() && !isAttended(userAccount) && !isAlreadyEnrolled(userAccount);
     }
 
     public boolean isDisenrollableFor(UserAccount userAccount) {
@@ -143,5 +145,18 @@ public class Event {
 
     private List<Enrollment> getWaitingList() {
         return this.enrollments.stream().filter(enrollment -> !enrollment.isAccepted()).collect(Collectors.toList());
+    }
+
+    public void accept(Enrollment enrollment) {
+        if(this.eventType == EventType.CONFIRMATIVE
+            && this.limitOfEnrollments > this.getNumberOfAcceptedEnrollments()) {
+            enrollment.setAccepted(true);
+        }
+    }
+
+    public void reject(Enrollment enrollment) {
+        if(this.eventType == EventType.CONFIRMATIVE) {
+            enrollment.setAccepted(false);
+        }
     }
 }

@@ -50,8 +50,26 @@ public class EventService {
 
     public void cancelEnrollment(Event event, Account account) {
         Enrollment enrollment = enrollmentRepository.findByEventAndAccount(event, account);
-        event.removeEnrollment(enrollment); // 관계를 끊어주고
-        enrollmentRepository.delete(enrollment); // 삭제
-        event.acceptNextWaitingEnrollment();
+        if(!enrollment.isAttended()) {
+            event.removeEnrollment(enrollment); // 관계를 끊어주고
+            enrollmentRepository.delete(enrollment); // 삭제
+            event.acceptNextWaitingEnrollment();
+        }
+    }
+
+    public void acceptEnrollment(Event event, Enrollment enrollment) {
+        event.accept(enrollment);
+    }
+
+    public void rejectEnrollment(Event event, Enrollment enrollment) {
+        event.reject(enrollment);
+    }
+
+    public void checkInEnrollment(Enrollment enrollment) {
+        enrollment.setAttended(true);
+    }
+
+    public void cancelCheckInEnrollment(Enrollment enrollment) {
+        enrollment.setAttended(false);
     }
 }
