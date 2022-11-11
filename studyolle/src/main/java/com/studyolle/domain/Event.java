@@ -3,7 +3,6 @@ package com.studyolle.domain;
 import com.studyolle.account.UserAccount;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
-import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import javax.persistence.*;
@@ -92,5 +91,9 @@ public class Event {
             this.enrollments.stream().filter(Enrollment::isAccepted)이거 할 때 쿼리가 발생함 -> O(N)
         */
         return this.limitOfEnrollments - (int) this.enrollments.stream().filter(Enrollment::isAccepted).count();
+    }
+
+    public long getNumberOfAcceptedEnrollments() {
+        return this.enrollments.stream().filter(Enrollment::isAccepted).count();
     }
 }
