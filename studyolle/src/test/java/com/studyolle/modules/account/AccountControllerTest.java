@@ -1,5 +1,6 @@
 package com.studyolle.modules.account;
 
+import com.studyolle.infra.MockMvcTest;
 import com.studyolle.infra.mail.EmailMessage;
 import com.studyolle.infra.mail.EmailService;
 import com.studyolle.modules.account.Account;
@@ -24,15 +25,10 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
-@Transactional
-@SpringBootTest
-@AutoConfigureMockMvc
+@MockMvcTest
 class AccountControllerTest {
-    @Autowired
-    private MockMvc mockMvc; // Security를 쓸 때 궁합이 좋음
-
-    @Autowired
-    private AccountRepository accountRepository;
+    @Autowired MockMvc mockMvc; // Security를 쓸 때 궁합이 좋음
+    @Autowired AccountRepository accountRepository;
 
     @MockBean
     EmailService emailService;

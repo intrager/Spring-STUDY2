@@ -1,5 +1,7 @@
 package com.studyolle.modules.study;
 
+import com.studyolle.infra.MockMvcTest;
+import com.studyolle.modules.account.AccountFactory;
 import com.studyolle.modules.account.WithAccount;
 import com.studyolle.modules.account.AccountRepository;
 import com.studyolle.modules.account.Account;
@@ -19,16 +21,15 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
-@Transactional
-@SpringBootTest
-@AutoConfigureMockMvc
-@RequiredArgsConstructor
+@MockMvcTest
 public class StudyControllerTest {
 
-    @Autowired protected MockMvc mockMvc;
-    @Autowired protected StudyService studyService;
-    @Autowired protected StudyRepository studyRepository;
-    @Autowired protected AccountRepository accountRepository;
+    @Autowired MockMvc mockMvc;
+    @Autowired StudyService studyService;
+    @Autowired StudyRepository studyRepository;
+    @Autowired AccountRepository accountRepository;
+    @Autowired AccountFactory accountFactory;
+    @Autowired StudyFactory studyFactory;
 
     @AfterEach
     void afterEach() {
@@ -108,8 +109,8 @@ public class StudyControllerTest {
     @WithAccount("bruce")
     @DisplayName("스터디 가입")
     void joinStudy() throws Exception {
-        Account brucehan = createAccount("brucehan");
-        Study study = createStudy("test-study", brucehan);
+        Account brucehan = accountFactory.createAccount("brucehan");
+        Study study = studyFactory.createStudy("test-study", brucehan);
 
         mockMvc.perform(get("/study/" + study.getPath() + "/join"))
                 .andExpect(status().is3xxRedirection())
@@ -123,8 +124,8 @@ public class StudyControllerTest {
     @WithAccount("bruce")
     @DisplayName("스터디 탈퇴")
     void leaveStudy() throws Exception {
-        Account brucehan = createAccount("brucehan");
-        Study study = createStudy("test-study", brucehan);
+        Account brucehan = accountFactory.createAccount("brucehan");
+        Study study = studyFactory.createStudy("test-study", brucehan);
 
         Account bruce = accountRepository.findByNickname("bruce");
         studyService.addMember(study, bruce);
@@ -133,20 +134,5 @@ public class StudyControllerTest {
                 .andExpect(status().is3xxRedirection())
                 .andExpect(redirectedUrl("/study/" + study.getPath() + "/members"));
         assertFalse(study.getMembers().contains(bruce));
-    }
-
-    protected Study createStudy(String path, Account manager) {
-        Study study = new Study();
-        study.setPath(path);
-        studyService.createNewStudy(study, manager);
-        return study;
-    }
-
-    protected Account createAccount(String nickname) {
-        Account brucehan = new Account();
-        brucehan.setNickname(nickname);
-        brucehan.setEmail(nickname + "@induk.ac.kr");
-        accountRepository.save(brucehan);
-        return brucehan;
     }
 }
