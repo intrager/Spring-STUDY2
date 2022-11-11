@@ -37,3 +37,4 @@ src/main/resources/static/node_modules
 
 ### PROPERTIES ###
 src/main/resources/static/nodeapplication-dev.properties
+application-dev.properties
