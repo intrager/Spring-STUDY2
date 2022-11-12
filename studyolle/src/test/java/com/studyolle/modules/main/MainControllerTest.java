@@ -21,7 +21,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 @MockMvcTest
-public class MainControllerTest {
+public class MainControllerTest extends AbstractMethodError {
 
     @Autowired MockMvc mockMvc;
     @Autowired AccountService accountService;

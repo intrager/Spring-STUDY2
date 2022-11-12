@@ -5,7 +5,7 @@ import org.springframework.context.annotation.Profile;
 import org.springframework.stereotype.Component;
 
 @Slf4j
-@Profile("local") // 콘솔에서 개발할 때
+@Profile({"local", "test"}) // 콘솔에서 개발할 때, test 안 넣으면 테스트 돌릴 때 빈이 없음
 @Component
 public class ConsoleEmailService implements EmailService {
 

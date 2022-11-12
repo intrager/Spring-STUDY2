@@ -20,13 +20,13 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 
 @MockMvcTest
-public class StudySettingsControllerTest {
+public class StudySettingsControllerTest extends AbstractMethodError {
 
     @Autowired MockMvc mockMvc;
+    @Autowired StudyFactory studyFactory;
+    @Autowired AccountFactory accountFactory;
     @Autowired StudyRepository studyRepository;
     @Autowired AccountRepository accountRepository;
-    @Autowired AccountFactory accountFactory;
-    @Autowired StudyFactory studyFactory;
 
     @Test
     @WithAccount("bruce")

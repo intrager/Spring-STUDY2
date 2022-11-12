@@ -21,13 +21,13 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 @MockMvcTest
-class EventControllerTest {
+class EventControllerTest extends AbstractMethodError{
 
     @Autowired MockMvc mockMvc;
-    @Autowired EventService eventService;
-    @Autowired EnrollmentRepository enrollmentRepository;
-    @Autowired AccountFactory accountFactory;
     @Autowired StudyFactory studyFactory;
+    @Autowired EventService eventService;
+    @Autowired AccountFactory accountFactory;
+    @Autowired EnrollmentRepository enrollmentRepository;
     @Autowired AccountRepository accountRepository;
 
     @Test

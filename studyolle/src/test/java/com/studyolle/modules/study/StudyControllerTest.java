@@ -22,7 +22,7 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
 @MockMvcTest
-public class StudyControllerTest {
+public class StudyControllerTest extends AbstractMethodError {
 
     @Autowired MockMvc mockMvc;
     @Autowired StudyService studyService;
