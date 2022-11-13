@@ -149,7 +149,7 @@ public class EventController {
 
     @GetMapping("/events/{eventId}/enrollments/{enrollmentId}/accept")
     public String acceptEnrollment(@CurrentAccount Account account, @PathVariable String path,
-                                   @PathVariable("eventId") Event event, @PathVariable("enrollmentId")Enrollment enrollment) {
+                                   @PathVariable("eventId") Event event, @PathVariable("enrollmentId") Enrollment enrollment) {
         Study study = studyService.getStudyToUpdate(account, path);
         eventService.acceptEnrollment(event, enrollment);
         return "redirect:/study/" + study.getEncodedPath() + "/events/" + event.getId();

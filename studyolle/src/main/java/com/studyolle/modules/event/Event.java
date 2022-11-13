@@ -64,7 +64,7 @@ public class Event {
     }
 
     public boolean isDisenrollableFor(UserAccount userAccount) {
-        return isNotClosed() && isAlreadyEnrolled(userAccount);
+        return isNotClosed() && isAlreadyEnrolled(userAccount) && isAlreadyEnrolled(userAccount);
     }
 
     private boolean isNotClosed() {
@@ -115,6 +115,21 @@ public class Event {
     public void removeEnrollment(Enrollment enrollment) {
         this.enrollments.remove(enrollment);
         enrollment.setEvent(null);
+    }
+
+    public boolean canAccept(Enrollment enrollment) {
+        return this.eventType == EventType.CONFIRMATIVE
+                && this.enrollments.contains(enrollment)
+                && this.limitOfEnrollments > this.getNumberOfAcceptedEnrollments()
+                && !enrollment.isAttended()
+                && !enrollment.isAccepted();
+    }
+
+    public boolean canReject(Enrollment enrollment) {
+        return this.eventType == EventType.CONFIRMATIVE
+                && this.enrollments.contains(enrollment)
+                && !enrollment.isAttended()
+                && enrollment.isAccepted();
     }
 
     public void acceptNextWaitingEnrollment() {
