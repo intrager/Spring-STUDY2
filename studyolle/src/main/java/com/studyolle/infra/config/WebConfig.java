@@ -25,6 +25,6 @@ public class WebConfig implements WebMvcConfigurer {
         staticResourcePath.add("/node_modules/**");
 
         registry.addInterceptor(notificationInterceptor)
-                .excludePathPatterns("");
+                .excludePathPatterns(staticResourcePath);
     }
 }

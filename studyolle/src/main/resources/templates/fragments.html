@@ -24,6 +24,39 @@
 			padding: 0;
 			margin: 0;
 		}
+
+		#study-logo {
+			height: 200px;
+			width: 100%;
+			overflow: hidden;
+			padding: 0;
+			margin: 0;
+		}
+
+		#study-logo img {
+			height: auto;
+			width: 100%;
+			overflow: hidden;
+		}
+
+		body {
+            font-family: -apple-system, BlinkMacSystemFont, "Noto Sans KR", "Segoe UI", Roboto, "Helvetica Neue", Arial, "Noto Sans", sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji";
+		}S
+
+		body,
+		input,
+		button,
+		select,
+		optgroup,
+		textarea,
+		.tooltip,
+		.popover {
+            font-family: -apple-system, BlinkMacSystemFont, "Noto Sans KR", "Segoe UI", Roboto, "Helvetica Neue", Arial, "Noto Sans", sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji";
+		}
+
+		table th {
+			font-weight: lighter;
+		}
 	</style>
 </head>
 
@@ -261,15 +294,6 @@
 	<script type="application/javascript">
         $(function () {
             $('.editor').summernote({
-                toolbar: [
-                    // [groupName, [list of button]]
-                    ['style', ['bold', 'italic', 'underline', 'clear']],
-                    ['font', ['strikethrough', 'superscript', 'subscript']],
-                    ['fontsize', ['fontsize']],
-                    ['color', ['color']],
-                    ['para', ['ul', 'ol', 'paragraph']],
-                    ['height', ['height']]
-                ],
                 fontNames: ['Arial', 'Arial Black', 'Comic Sans MS', 'Courier New', 'Noto Sans KR', 'Merriweather'],
                 placeholder: '스터디의 목표, 일정, 진행방식, 사용할 교재 또는 인터넷 강좌 그리고 모집 중인 스터디원 등 스터디에 대해 자세히 적어주세요.',
 				tabsize: 2,
@@ -511,5 +535,16 @@
 		</form>
 	</div>
 </div>
+
+<ul th:fragment="notification-list (notifications)" class="list-group list-group-flush">
+	<a href="#" th:href="@{${noti.link}}" th:each="noti: ${notifications}"
+	   class="list-group-item list-group-item-action">
+		<div class="d-flex w-100 justify-content-between">
+			<small class="text-muted" th:text="${noti.title}">Notification title</small>
+			<small class="fromNow text-muted" th:text="${noti.createdDateTime}">2 days ago</small>
+		</div>
+		<p th:text="${noti.message}" class="text-left mb-0 mt-1">message</p>
+	</a>
+</ul>
 
 </html>

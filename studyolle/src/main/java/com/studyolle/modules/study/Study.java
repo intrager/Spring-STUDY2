@@ -13,6 +13,7 @@ import java.time.LocalDateTime;
 import java.util.HashSet;
 import java.util.Set;
 
+// @EntityGraph에다가 attributePaths 만 놓으면 밑에 어노테이션들 지울 수 있음
 @NamedEntityGraph(name = "Study.withAll", attributeNodes = { // 엔티티 매니저 그래프
         @NamedAttributeNode("tags"),
         @NamedAttributeNode("zones"),
@@ -31,6 +32,9 @@ import java.util.Set;
 @NamedEntityGraph(name = "Study.withTagsAndZones", attributeNodes = {
         @NamedAttributeNode("tags"),
         @NamedAttributeNode("zones")})
+@NamedEntityGraph(name = "Study.withManagersAndMembers", attributeNodes = {
+        @NamedAttributeNode("managers"),
+        @NamedAttributeNode("members")})
 @Entity
 @Getter @Setter
 @EqualsAndHashCode(of = "id")

@@ -26,7 +26,38 @@ public interface StudyRepository extends JpaRepository<Study, Long> {
 
     Study findStudyOnlyByPath(String path);
 
+    // Study.withTagsAndZones이 이름에 해당하는 엔티티 그래프를 자주 사용할 때 쓰는 방법
     @EntityGraph(value = "Study.withTagsAndZones", type = EntityGraph.EntityGraphType.FETCH)
     Study findStudyWithTagsAndZonesById(Long id);
 
+    @EntityGraph(value = "Study.withManagersAndMembers", type = EntityGraph.EntityGraphType.FETCH)
+    Study findStudyWithManagersAndMembersById(Long id);
 }
+
+/**
+ *     @EntityGraph(attributePaths = {"tags", "zones", "managers", "members"}, type = EntityGraph.EntityGraphType.LOAD) // 연관된 애들은 일단 EAGER, 그 외 애들은 걔네 지정값대로
+ *     Study findByPath(String path); // 이걸 사용하면 study, member, tag, zone, manager 데이터 같이 조인
+ *     // 요청이 많이 들어오는 상황에서는 차라리 EAGER로 한 번에 무겁게 가져오는 게 나음. 즉, 쿼리 개수를 줄이는 방향으로 감
+ *
+ *     @EntityGraph(attributePaths = {"tags", "managers"})
+ *     Study findStudyWithTagsByPath(String path);
+ *
+ *     @EntityGraph(attributePaths = {"zones", "managers"})
+ *     Study findStudyWithZonesByPath(String path);
+ *
+ *     @EntityGraph(attributePaths = "managers")
+ *     Study findStudyWithManagersByPath(String path);
+ *
+ *     @EntityGraph(attributePaths = "members")
+ *     Study findStudyWithMembersByPath(String path);
+ *
+ *     Study findStudyOnlyByPath(String path);
+ *
+ *     // Study.withTagsAndZones이 이름에 해당하는 엔티티 그래프를 자주 사용할 때 쓰는 방법
+ *     @EntityGraph(attributePaths = {"zones", "tags"})
+ *     Study findStudyWithTagsAndZonesById(Long id);
+ *
+ *     @EntityGraph(attributePaths = {"members", "managers"}) // 근데 이렇게 해도 됨
+ *     Study findStudyWithManagersAndMembersById(Long id);
+
+ */

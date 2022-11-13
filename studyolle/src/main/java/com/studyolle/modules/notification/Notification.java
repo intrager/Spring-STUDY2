@@ -27,7 +27,7 @@ public class Notification {
     @ManyToOne
     private Account account; //account 정보가 있어야지 notification을 가지고 알림을 조회
 
-    private LocalDateTime createdLocalDateTime;
+    private LocalDateTime createdDateTime;
 
     @Enumerated(EnumType.STRING)
     private NotificationType notificationType;

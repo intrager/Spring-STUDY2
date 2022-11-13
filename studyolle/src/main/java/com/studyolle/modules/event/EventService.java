@@ -5,6 +5,7 @@ import com.studyolle.modules.event.form.EventForm;
 import com.studyolle.modules.study.Study;
 import lombok.RequiredArgsConstructor;
 import org.modelmapper.ModelMapper;
+import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -18,11 +19,13 @@ public class EventService {
     private final EventRepository eventRepository;
     private final ModelMapper modelMapper;
     private final EnrollmentRepository enrollmentRepository;
+    private final ApplicationEventPublisher eventPublisher;
 
     public Event createEvent(Event event, Study study, Account account) {
         event.setCreatedBy(account); // 모임장
         event.setCreatedDateTime(LocalDateTime.now());
         event.setStudy(study);
+        eventPubli
         return eventRepository.save(event);
     }
 
