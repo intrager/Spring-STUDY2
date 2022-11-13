@@ -189,7 +189,7 @@ public class StudySettingController {
     @PostMapping("/study/publish")
     public String publishStudy(@CurrentAccount Account account, @PathVariable String path,
                                RedirectAttributes attributes) {
-        Study study = studyService.getStudyToUpdate(account, path);
+        Study study = studyService.getStudyToUpdateStatus(account, path);
         studyService.publish(study);
         attributes.addFlashAttribute("message", "스터디를 공개했습니다.");
         return "redirect:/study/" + getPath(path) + "/settings/study";
