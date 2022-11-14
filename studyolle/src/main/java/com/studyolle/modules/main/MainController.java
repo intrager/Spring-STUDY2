@@ -1,7 +1,9 @@
 package com.studyolle.modules.main;
 
 import com.studyolle.modules.account.Account;
+import com.studyolle.modules.account.AccountRepository;
 import com.studyolle.modules.account.CurrentAccount;
+import com.studyolle.modules.event.EnrollmentRepository;
 import com.studyolle.modules.study.Study;
 import com.studyolle.modules.study.StudyRepository;
 import lombok.RequiredArgsConstructor;
@@ -18,11 +20,22 @@ import org.springframework.web.bind.annotation.GetMapping;
 public class MainController {
 
     private final StudyRepository studyRepository;
+    private final AccountRepository accountRepository;
+    private final EnrollmentRepository enrollmentRepository;
 
     @GetMapping("/")
     public String home(@CurrentAccount Account account, Model model) {
         if(account != null) { // 인증을 한 사용자면(로그인을 했구나)
-            model.addAttribute(account);
+            Account loadedAccount = accountRepository.findAccountWithTagsAndZonesById(account.getId());
+            model.addAttribute(loadedAccount);
+            model.addAttribute("enrollmentList", enrollmentRepository.findByAccountAndAcceptedOrderByEnrolledAtDesc(loadedAccount, true));
+            model.addAttribute("studyList", studyRepository.findByAccount(
+                    loadedAccount.getTags(), loadedAccount.getZones()));
+            model.addAttribute("studyManagerOf",
+                    studyRepository.findFirst5ByManagersContainingAndClosedOrderByPublishedDateTimeDesc(account, false));
+            model.addAttribute("studyMemberOf",
+                    studyRepository.findFirst5ByMembersContainingAndClosedOrderByPublishedDateTimeDesc(account, false));
+            return "index-after-login";
         }
         model.addAttribute("studyList", studyRepository.findFirst9ByPublishedAndClosedOrderByPublishedDateTimeDesc(true, false));
         return "index";

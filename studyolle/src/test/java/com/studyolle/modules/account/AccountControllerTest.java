@@ -42,7 +42,7 @@ class AccountControllerTest extends AbstractContainerBaseTest {
     @Test // 인증이 된 사용자냐 아니냐
     void checkEmailToken_with_wrong_input() throws Exception {
         mockMvc.perform(get("/check-email-token")
-                .param("token", "wjdtncnldjqtjdrhd")
+                .param("token", "")
                 .param("email", "email@email.com"))
                 .andExpect(status().isOk()) // 위와 같은 값에 해당하는 게 없음
                 .andExpect(model().attributeExists("error"))

@@ -11,6 +11,10 @@ import java.util.HashSet;
 import java.util.Set;
 import java.util.UUID;
 
+
+@NamedEntityGraph(name = "Account.withTagsAndZones", attributeNodes = {
+        @NamedAttributeNode("tags"),
+        @NamedAttributeNode("zones")})
 @Entity
 @Getter @Setter
 // 연관관계가 복잡해질 때 EqualsAndHashCode에서 다른 코드로 인해 순환참조하느라 무한 루프가 발생함 -> Stack Overflow발생 야기
