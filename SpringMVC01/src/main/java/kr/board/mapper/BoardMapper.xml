@@ -3,9 +3,9 @@
 
 <mapper namespace="kr.board.mapper.BoardMapper">
 
-	<select id="getList" resultType="kr.board.entity.Board">
+	<select id="getList" resultType="kr.board.entity.MyBoard">
 		SELECT * 
-		  FROM BOARD
+		  FROM MYBOARD
 		ORDER BY idx DESC
 	</select>
 </mapper>

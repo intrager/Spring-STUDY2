@@ -26,7 +26,7 @@
 				<td>작성일</td>
 				<td>조회수</td>
 			</tr>
-			<c:forEach var="vo" items="${list}">
+			<c:forEach items="${list}" var="vo">
 			<tr>
 				<td>${vo.idx}</td>
 				<td>${vo.title}</td>

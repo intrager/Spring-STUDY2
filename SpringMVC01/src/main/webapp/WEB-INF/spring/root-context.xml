@@ -12,10 +12,18 @@
 	<!-- Root Context: defines shared resources visible to all other web components -->
 	<bean id="hikariConfig" class="com.zaxxer.hikari.HikariConfig">
 		<property name="driverClassName" value="com.mysql.cj.jdbc.Driver" />
-		<property name="jdbcUrl" value="jdbc:mysql://localhost:3306/com?serverTimeZone=UTC&characterEncoding=UTF-8"/>
+		<property name="jdbcUrl" value="jdbc:mysql://localhost:3306/test?serverTimezone=UTC"/>
 		<property name="username" value="root" />
 		<property name="password" value="cometrue" />
 	</bean>
+	
+	<!-- 
+	<bean id="hikariConfig" class="com.zaxxer.hikari.HikariConfig">
+		<property name="driverClassName" value="oracle.jdbc.driver.OracleDriver"/>
+		<property name="jdbcUrl" value="jdbc:oracle:thin:@12.0.0.1:1521:XE"/>
+		<property name="username" value="hr"/>
+		<property name="password" value="hr"/>
+	-->
 	
 	<!-- HikariDataSource(Connection Pool을 만드는 역할을 함) -->
 	<bean id="dataSource" class="com.zaxxer.hikari.HikariDataSource" destroy-method="close">
