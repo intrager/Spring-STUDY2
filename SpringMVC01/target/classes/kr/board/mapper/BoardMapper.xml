@@ -13,4 +13,22 @@
 		INSERT INTO MYBOARD(title, content, writer)
 		VALUES (#{title}, #{content}, #{writer})
 	</insert>
+	
+	<select id="boardContent" parameterType="int" resultType="kr.board.entity.MyBoard">
+		SELECT *
+		  FROM MyBoard
+		 WHERE IDX=#{idx}
+	</select>
+	
+	<update id="updateBoard" parameterType="MyBoard">
+		UPDATE MyBoard
+		   SET TITLE=#{title}
+		 	   , CONTENT=#{content}
+		 WHERE IDX=#{idx}
+	</update>
+	
+	<delete id="deleteBoard" parameterType="int">
+		DELETE FROM MYBOARD
+		 WHERE idx=#{idx}
+	</delete>
 </mapper>
