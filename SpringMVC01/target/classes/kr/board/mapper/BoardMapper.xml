@@ -16,12 +16,12 @@
 	
 	<select id="boardContent" parameterType="int" resultType="kr.board.entity.MyBoard">
 		SELECT *
-		  FROM MyBoard
+		  FROM MYBOARD
 		 WHERE IDX=#{idx}
 	</select>
 	
-	<update id="updateBoard" parameterType="MyBoard">
-		UPDATE MyBoard
+	<update id="updateBoard" parameterType="kr.board.entity.MyBoard">
+		UPDATE MYBOARD
 		   SET TITLE=#{title}
 		 	   , CONTENT=#{content}
 		 WHERE IDX=#{idx}

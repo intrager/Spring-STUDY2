@@ -17,7 +17,7 @@
   <div class="panel panel-default">
     <div class="panel-heading">BOARD</div>
     <div class="panel-body">
-		<form action="updateBoard.do" method="post">
+		<form action="../updateBoard.do" method="post">
 			<input type="hidden" id="idx" name="idx" value="${vo.idx}" />
 			<table class="table table-bordered">
 				<tr>
@@ -36,7 +36,7 @@
 					<td colspan="2" align="center">
 						<button type="submit" class="btn btn-primary btn-sm">수정</button>
 						<button type="reset" class="btn btn-warning btn-sm">취소</button>
-						<button type="button" class="btn btn-info btn-sm" onclick="location.href='boardList.do'">목록</button>
+						<button type="button" class="btn btn-info btn-sm" onclick="location.href='../boardList.do'">목록</button>
 					</td>
 				</tr>
 			</table>

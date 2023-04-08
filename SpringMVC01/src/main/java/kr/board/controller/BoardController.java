@@ -45,6 +45,7 @@ public class BoardController {
 	@GetMapping("/boardContent.do")
 	public String boardContent(@RequestParam("idx") int idx, Model model) {	// ?idx=7
 		MyBoard vo = mapper.boardContent(idx);
+		mapper.countingViews(idx);
 		model.addAttribute("vo", vo);
 		return "boardContent";
 	}
