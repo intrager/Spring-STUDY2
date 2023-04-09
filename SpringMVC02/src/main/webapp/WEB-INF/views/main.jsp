@@ -19,7 +19,7 @@
   	function loadDataList() {
   		// 서버와 통신 : 데이터 리스트 가져오기
   		$.ajax({
-  			url : "boardList.do",
+  			url : "board/all",
   			type : "get",
   			dataType : "JSON",
   			success : makeView,
@@ -39,14 +39,115 @@
   		$.each(data, function(index, obj) { // obj={"idx":5, "title":"게시판~~"}
   			listHTML += "<tr>";
   	  		listHTML += "<td>" + obj.idx + "</td>";
-  	  		listHTML += "<td>" + obj.title + "</td>";
+  	  		listHTML += "<td id='board_title" + obj.idx + "'><a href='javascript:viewContent(" + obj.idx + ")'>" + obj.title + "</a></td>";
   	  		listHTML += "<td>" + obj.writer + "</td>";
-  	  		listHTML += "<td>" + obj.indate + "</td>";
-  	  		listHTML += "<td>" + obj.count + "</td>";
+  	  		listHTML += "<td>" + obj.indate.split(' ')[0] + "</td>";
+  	  		listHTML += "<td id='count" + obj.idx + "'>" + obj.count + "</td>";
+  	  		listHTML += "</tr>";
+  	  		
+  	  		listHTML += "<tr id='content" + obj.idx + "' style='display:none'>";
+  	  		listHTML += "<td>내용</td>";
+  	  		listHTML += "<td colspan='4'>";
+  	  		listHTML += "<textarea id='area" + obj.idx + "' readonly rows='7' class='form-control'></textarea>";
+  	  		listHTML += "<br/>";
+ 			listHTML += "<span id='update_content" + obj.idx + "'><button class='btn btn-success btn-sm' onClick='updateContentForm(" + obj.idx + ")'>수정화면</button></span>&nbsp";
+ 			listHTML += "<button class='btn btn-warning btn-sm' onClick='deleteContent(" + obj.idx + ")'>삭제</button>";
+  	  		listHTML += "</td>";
   	  		listHTML += "</tr>";
   		});
+  		listHTML += "<tr>";
+  		listHTML += "<td colspan='5'>";
+  		listHTML += "<button class='btn btn-primary btn-sm' onClick='transformingForm()'>글쓰기</button>";
+  		listHTML += "</td>";
+  		listHTML += "</tr>";
   		listHTML += "</table>";
   		$("#dataList").html(listHTML);
+  		viewList();
+  	}
+  							  
+  	function transformingForm() {
+  		$("#dataList").css("display", "none"); // 감춘다
+  		$("#writeForm").css("display", "block"); // 보여준다
+  	}
+  	
+  	function viewList() {
+  		$("#dataList").css("display", "block"); // 감춘다
+  		$("#writeForm").css("display", "none"); // 보여준다
+  	}
+  	
+  	function insertBoard() {
+  		var formData = $("#registerForm").serialize();
+  		$.ajax({
+  			url : "board/new",
+  			type : "post",
+  			data : formData,
+  			success : loadDataList,
+  			error : function() { alert("error"); }
+  		});
+  		
+  		$("#clearForm").trigger("click");
+  	}
+  	
+  	function viewContent(idx) {
+  		if($("#content"+idx).css("display") == "none") { // 열릴 때
+  			
+  			$.ajax({
+  				url : `board/\${idx}`,
+  				type : "get",
+  				dataType : "json",
+  				success : function(data) {   // data={ ... , "content" : ~~~`}
+  					$("#area"+idx).val(data.content);
+  				},
+  				error : function() { alert("error"); }
+  			});
+  			
+  			$("#content"+idx).css("display", "table-row");
+  			$("#area"+idx).attr("readonly", true);
+  		} else {  // 닫힐 때
+  			$("#content"+idx).css("display", "none");
+  			
+  			$.ajax({
+  				url : `board/count/\${idx}`,
+  				type : "put",
+  				dataType : "json",
+  				success : function(data) {
+  					$("#count"+idx).text(data.count); // html도 가능
+  				},
+  				error : function() {alert("error");}
+  			});
+  		}
+  	}
+  	
+  	function deleteContent(idx) {
+  		$.ajax({
+  			url : `board/\${idx}`,
+  			type : "delete",
+  			success : loadDataList,
+  			error : function() { alert("error"); }
+  		});
+  	}
+  	
+  	function updateContentForm(idx) {
+  		$("#area"+idx).attr("readonly", false);
+  		var title = $("#board_title"+idx).text();
+  		var newInputTag = "<input type='text' id='new_title" + idx + "' class='form-control' value='" + title + "'/>";
+  		$("#board_title"+idx).html(newInputTag);
+  		
+  		var newButton = "<button class='btn btn-primary btn-sm' onClick='updateContent(" + idx + ")'>수정</button>";
+  		$("#update_content"+idx).html(newButton);
+  	}
+  	
+  	function updateContent(idx) {
+  		var title = $("#new_title"+idx).val();
+  		var content = $("#area"+idx).val();
+  		$.ajax({
+  			url : "board/update",
+  			type : "patch",
+  			contentType : 'application/json;charset=utf-8',
+  			data : JSON.stringify({"idx" : idx, "title" : title, "content" : content}),
+  			success : loadDataList,
+  			error : function() { alert("error"); }
+  		});
   	}
   </script>
 </head>
@@ -57,7 +158,31 @@
   <div class="panel panel-default">
     <div class="panel-heading">BOARD</div>
     <div class="panel-body" id="dataList">Panel Content</div>
-    <div class="panel-body" >Panel Content</div>
+    <div class="panel-body" id="writeForm" style="display: none">
+		<form id="registerForm">
+			<table class="table table-bordered">
+				<tr>
+					<td>제목</td>
+					<td><input type="text" id="title" name="title" class="form-control" /></td>
+				</tr>
+				<tr>
+					<td>내용</td>
+					<td><textarea rows="7" id="content" name="content" class="form-control"></textarea></td>
+				</tr>
+				<tr>
+					<td>작성자</td>
+					<td><input type="text" id="writer" name="writer" class="form-control" /></td>
+				</tr>
+				<tr>
+					<td colspan="2" align="center">
+						<button class="btn btn-success btn-sm" onClick="insertBoard()">등록</button>
+						<button type="reset" id="clearForm" class="btn btn-warning btn-sm">취소</button>
+						<button type="button" class="btn btn-info btn-sm" onClick="viewList()">목록보기</button>
+					</td>
+				</tr>
+			</table>
+		</form>
+	</div>
     <div class="panel-footer">다무신사랑해</div>
   </div>
 </div>
