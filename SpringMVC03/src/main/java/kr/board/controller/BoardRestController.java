@@ -21,38 +21,38 @@ import kr.board.mapper.BoardMapper;
 public class BoardRestController {
 
 	@Autowired
-	BoardMapper mapper;
+	BoardMapper boardMapper;
 
 //	@RequestMapping("/boardList.do")
 	@GetMapping("/all")
 	public List<MyBoard> boardList() {
-		return mapper.getList();
+		return boardMapper.getList();
 	}
 
 //	@RequestMapping("/insertBoard.do")
 	@PostMapping("/new")
 	public void insertBoard(MyBoard vo) {
-		mapper.insertBoard(vo);
+		boardMapper.insertBoard(vo);
 	}
 
 	@PatchMapping("/update")
 	public void updateBoard(@RequestBody MyBoard vo) {
-		mapper.updateBoard(vo);
+		boardMapper.updateBoard(vo);
 	}
 
 	@DeleteMapping("/{idx}")
 	public void deleteBoard(@PathVariable("idx") int idx) {
-		mapper.deleteBoard(idx);
+		boardMapper.deleteBoard(idx);
 	}
 
 	@GetMapping("/{idx}")
 	public MyBoard boardContent(@PathVariable("idx") int idx) {
-		return mapper.boardContent(idx); // vo -> JSON
+		return boardMapper.boardContent(idx); // vo -> JSON
 	}
 
 	@PutMapping("/count/{idx}")
 	public MyBoard countView(@PathVariable("idx") int idx) {
-		mapper.countingViews(idx);
-		return mapper.boardContent(idx);
+		boardMapper.countingViews(idx);
+		return boardMapper.boardContent(idx);
 	}
 }
