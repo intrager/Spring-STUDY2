@@ -31,4 +31,23 @@
 			, #{memProfile}
 		)
 	</insert>
+	
+	<select id="validateLoginInfo" parameterType="kr.board.entity.Member"
+								   resultType="kr.board.entity.Member">
+		SELECT *
+		  FROM MEMBER_TABLE
+		 WHERE memID=#{memID}
+		   AND memPassword=#{memPassword}						   
+    </select>
+    
+    <update id="updateMem" parameterType="kr.board.entity.Member">
+    	UPDATE MEMBER_TABLE
+    	   SET memPassword=#{memPassword}
+    	   	   , memName=#{memName}
+    	   	   , memAge=#{memAge}
+    	   	   , memGender=#{memGender}
+    	   	   , memEmail=#{memEmail}
+    	   	   , memProfile=#{memProfile}
+    	 WHERE memID=#{memID} 
+    </update>
 </mapper>

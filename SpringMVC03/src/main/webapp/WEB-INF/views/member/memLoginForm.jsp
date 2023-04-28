@@ -11,6 +11,14 @@
   <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
   <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.3/jquery.min.js"></script>
   <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
+  <script type="text/javascript">
+  	$(document).ready(function() {
+  		if(${!empty msgType}) {
+  			$("#messageType").attr("class", "modal-content panel-warning");
+  			$("#myMessage").modal("show");
+  		}
+  	});
+  </script>
 </head>
 <body>
 <div class="container">
@@ -36,6 +44,24 @@
     			</tr>
     		</table>
     	</form>
+	</div>
+	<!-- 실패 메시지를 띄우는 부분 -->
+	<div id="myMessage" class="modal fade" role="dialog">
+		<div class="modal-dialog">
+			<!-- Modal dialog -->
+			<div id="messageType" class="modal-content panel-info">
+				<div class="modal-header panel-heading">
+					<button type="button" class="close" data-dismiss="modal">&times;</button>
+					<h4 class="modal-title">${msgType}</h4>
+				</div>
+				<div class="modal-body">
+					<p>${msg}</p>
+				</div>
+				<div class="modal-footer">
+					<button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+				</div>
+			</div>
+		</div>
 	</div>
     <div class="panel-footer">다무신사랑해</div>
   </div>
