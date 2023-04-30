@@ -110,6 +110,11 @@ public class MemberController {
 		}
 	}
 	
+	@RequestMapping("/updateImageForm.do")
+	public String updateImageForm() {
+		return "member/memImageForm";
+	}
+	
 	private void flashAttributeMessage(RedirectAttributes rttr, String msgType, String msg) {
 		rttr.addFlashAttribute("msgType", msgType);
 		rttr.addFlashAttribute("msg", msg);

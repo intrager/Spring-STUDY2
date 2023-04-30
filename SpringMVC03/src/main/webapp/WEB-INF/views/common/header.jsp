@@ -27,7 +27,7 @@
       <c:if test="${!empty mvo}">
 	      <ul class="nav navbar-nav navbar-right">
             <li><a href="${contextPath}/updateMemForm.do"><span class="glyphicon glyphicon-wrench"></span> 회원정보수정</a></li>
-            <li><a href="#"><span class="glyphicon glyphicon-picture"></span> 프로필 사진 등록</a></li>
+            <li><a href="${contextPath}/updateImageForm.do"><span class="glyphicon glyphicon-picture"></span> 프로필 사진 등록</a></li>
             <li><a href="${contextPath}/logout.do"><span class="glyphicon glyphicon-log-out"></span> 로그아웃</a></li>
 	      </ul>
       </c:if>
