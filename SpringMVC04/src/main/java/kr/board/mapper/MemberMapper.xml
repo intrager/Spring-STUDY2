@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="kr.board.mapper.MemberMapper">
+	
+	<insert id="registerMember" parameterType="kr.board.entity.Member">
+		INSERT INTO MEMBER_TABLE
+		(
+			memID
+			, memPassword
+			, memName
+			, memAge
+			, memGender
+			, memEmail
+			, memProfile	
+		)
+		VALUES
+		(
+			#{memID}
+			, #{memPassword}
+			, #{memName}
+			, #{memAge}
+			, #{memGender}
+			, #{memEmail}
+			, #{memProfile}
+		)
+	</insert>
+	
+	<select id="validateLoginInfo" parameterType="kr.board.entity.Member"
+								   resultType="kr.board.entity.Member">
+		SELECT *
+		  FROM MEMBER_TABLE
+		 WHERE memID=#{memID}
+		   AND memPassword=#{memPassword}						   
+    </select>
+    
+    <update id="updateMem" parameterType="kr.board.entity.Member">
+    	UPDATE MEMBER_TABLE
+    	   SET memPassword=#{memPassword}
+    	   	   , memName=#{memName}
+    	   	   , memAge=#{memAge}
+    	   	   , memGender=#{memGender}
+    	   	   , memEmail=#{memEmail}
+    	   	   , memProfile=#{memProfile}
+    	 WHERE memID=#{memID} 
+    </update>
+    
+    <select id="selectMemberInfo" resultType="kr.board.entity.Member">
+    	SELECT memID, memPassword, memName, memAge, memGender, memEmail, memProfile
+    	  FROM MEMBER_TABLE
+    	 WHERE memID=#{memID}
+    </select>
+    
+    <select id="selectMemImage" resultType="String">
+    	SELECT memProfile
+    	  FROM MEMBER_TABLE
+    	 WHERE memID=#{memID}
+    </select>
+    
+    <update id="updateMemImage" parameterType="kr.board.entity.Member">
+    	UPDATE MEMBER_TABLE 
+    	   SET memProfile=#{memProfile}
+    	 WHERE memID=#{memID}
+    </update>
+</mapper>
