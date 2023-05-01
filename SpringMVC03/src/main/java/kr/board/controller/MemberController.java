@@ -1,5 +1,9 @@
 package kr.board.controller;
 
+import java.io.File;
+import java.io.IOException;
+
+import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -10,6 +14,9 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import org.springframework.web.servlet.mvc.support.RedirectAttributesModelMap;
+
+import com.oreilly.servlet.MultipartRequest;
+import com.oreilly.servlet.multipart.DefaultFileRenamePolicy;
 
 import kr.board.entity.Member;
 import kr.board.mapper.MemberMapper;
@@ -27,7 +34,7 @@ public class MemberController {
 	
 	@RequestMapping("/checkMemberRegister.do")
 	public @ResponseBody int checkMemberRegister(@RequestParam("memID") String memID) {
-		Member checkForMember = memberMapper.checkMemberRegister(memID);
+		Member checkForMember = memberMapper.selectMemberInfo(memID);
 		if(checkForMember != null || memID.equals("")) return 0;
 		return 1;
 	}
@@ -113,6 +120,45 @@ public class MemberController {
 	@RequestMapping("/updateImageForm.do")
 	public String updateImageForm() {
 		return "member/memImageForm";
+	}
+	
+	@SuppressWarnings("deprecation")
+	@RequestMapping("/updateMemImage.do")
+	public String updateMemImage(HttpServletRequest request, RedirectAttributes rttr) throws IOException {
+		MultipartRequest multipart = null;
+		int fileMaxSize = 10 * 1024 * 1024; // 10MB
+		String savePath = request.getRealPath("resources/upload");
+		try {
+			multipart = new MultipartRequest(request, savePath, fileMaxSize, "UTF-8", new DefaultFileRenamePolicy());
+		} catch (IOException e) {
+			e.printStackTrace();
+			flashAttributeMessage(rttr, "실패 메시지", "파일의 크기는 10MB를 넘을 수 없습니다.");
+			return "redirect:/updateImageForm.do";
+		}
+		String memID = request.getParameter("memID");
+		String newProfile = "";
+		File file = multipart.getFile("memProfile");
+		if(file != null) {
+			// 이미지 파일 여부 체크 -> 이미지 파일이 아니면 삭제
+			String ext = file.getName()
+							 .substring(file.getName().lastIndexOf(".") + 1)
+							 .toUpperCase();
+			if(ext.matches("PNG|GIF|JPG")) {
+				String oldProfile = memberMapper.selectMemImage(memID);
+				File oldFile = new File(savePath + "/" + oldProfile);
+				if(oldFile.exists()) deleteFile(oldFile);
+			} else { // 이미지 파일이 아니면
+				if(file.exists()) deleteFile(file);
+				flashAttributeMessage(rttr, "실패 메시지", "이미지 파일만 업로드할 수 있습니다.");
+				return "redirect:/updateImageForm.do";
+			}
+		}
+		// 새로운 이미지를 테이블에 업데이트
+		return "";
+	}
+
+	private boolean deleteFile(File filename) {
+		return filename.delete();
 	}
 	
 	private void flashAttributeMessage(RedirectAttributes rttr, String msgType, String msg) {
