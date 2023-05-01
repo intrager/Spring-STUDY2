@@ -1,4 +1,4 @@
-package kr.board.mapper;
+package kr.board.mapper; 
 
 import org.apache.ibatis.annotations.Mapper;
 
@@ -11,4 +11,5 @@ public interface MemberMapper {
 	public int updateMem(Member member);
 	public Member selectMemberInfo(String memID);
 	public String selectMemImage(String memID);
+	public void updateMemImage(Member mvo);
 }

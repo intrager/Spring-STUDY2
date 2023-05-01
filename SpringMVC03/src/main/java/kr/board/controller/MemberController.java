@@ -124,7 +124,7 @@ public class MemberController {
 	
 	@SuppressWarnings("deprecation")
 	@RequestMapping("/updateMemImage.do")
-	public String updateMemImage(HttpServletRequest request, RedirectAttributes rttr) throws IOException {
+	public String updateMemImage(HttpServletRequest request, HttpSession session, RedirectAttributes rttr) throws IOException {
 		MultipartRequest multipart = null;
 		int fileMaxSize = 10 * 1024 * 1024; // 10MB
 		String savePath = request.getRealPath("resources/upload");
@@ -135,7 +135,7 @@ public class MemberController {
 			flashAttributeMessage(rttr, "실패 메시지", "파일의 크기는 10MB를 넘을 수 없습니다.");
 			return "redirect:/updateImageForm.do";
 		}
-		String memID = request.getParameter("memID");
+		String memID = multipart.getParameter("memID");
 		String newProfile = "";
 		File file = multipart.getFile("memProfile");
 		if(file != null) {
@@ -147,6 +147,7 @@ public class MemberController {
 				String oldProfile = memberMapper.selectMemImage(memID);
 				File oldFile = new File(savePath + "/" + oldProfile);
 				if(oldFile.exists()) deleteFile(oldFile);
+				newProfile = file.getName();
 			} else { // 이미지 파일이 아니면
 				if(file.exists()) deleteFile(file);
 				flashAttributeMessage(rttr, "실패 메시지", "이미지 파일만 업로드할 수 있습니다.");
@@ -154,7 +155,15 @@ public class MemberController {
 			}
 		}
 		// 새로운 이미지를 테이블에 업데이트
-		return "";
+		Member mvo = new Member();
+		mvo.setMemID(memID);
+		mvo.setMemProfile(newProfile);
+		memberMapper.updateMemImage(mvo);
+		mvo = memberMapper.selectMemberInfo(memID);
+		
+		session.setAttribute("mvo", mvo);
+		flashAttributeMessage(rttr, "성공 메시지", "프로필 이미지가 정상적으로 변경되었습니다.");
+		return "redirect:/";
 	}
 
 	private boolean deleteFile(File filename) {

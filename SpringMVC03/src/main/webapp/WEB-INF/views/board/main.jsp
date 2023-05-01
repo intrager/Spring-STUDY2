@@ -49,18 +49,26 @@
   	  		listHTML += "<td>내용</td>";
   	  		listHTML += "<td colspan='4'>";
   	  		listHTML += "<textarea id='area" + obj.idx + "' readonly rows='7' class='form-control'></textarea>";
-  	  		listHTML += "<br/>";
- 			listHTML += "<span id='update_content" + obj.idx + "'><button class='btn btn-success btn-sm' onClick='updateContentForm(" + obj.idx + ")'>수정화면</button></span>&nbsp";
- 			listHTML += "<button class='btn btn-warning btn-sm' onClick='deleteContent(" + obj.idx + ")'>삭제</button>";
-  	  		listHTML += "</td>";
+  	  		if("${mvo.memID}" == obj.memID) {
+	  	  		listHTML += "<br/>";
+	 			listHTML += "<span id='update_content" + obj.idx + "'><button class='btn btn-success btn-sm' onClick='updateContentForm(" + obj.idx + ")'>수정화면</button></span>&nbsp";
+	 			listHTML += "<button class='btn btn-warning btn-sm' onClick='deleteContent(" + obj.idx + ")'>삭제</button>";
+  	  		} else {
+	  	  		listHTML += "<br/>";
+	 			listHTML += "<span id='update_content" + obj.idx + "'><button class='btn btn-success btn-sm' onClick='updateContentForm(" + obj.idx + ")' disabled>수정화면</button></span>&nbsp";
+	 			listHTML += "<button class='btn btn-warning btn-sm' onClick='deleteContent(" + obj.idx + ")' disabled>삭제</button>";	
+  	  		}
+ 			listHTML += "</td>";
   	  		listHTML += "</tr>";
   		});
-  		listHTML += "<tr>";
-  		listHTML += "<td colspan='5'>";
-  		listHTML += "<button class='btn btn-primary btn-sm' onClick='transformingForm()'>글쓰기</button>";
-  		listHTML += "</td>";
-  		listHTML += "</tr>";
-  		listHTML += "</table>";
+  		if(${!empty mvo}) {
+	  		listHTML += "<tr>";
+	  		listHTML += "<td colspan='5'>";
+	  		listHTML += "<button class='btn btn-primary btn-sm' onClick='transformingForm()'>글쓰기</button>";
+	  		listHTML += "</td>";
+	  		listHTML += "</tr>";
+	  		listHTML += "</table>";
+  		}
   		$("#dataList").html(listHTML);
   		viewList();
   	}
@@ -154,12 +162,13 @@
 <body>
 <div class="container">
   <jsp:include page="../common/header.jsp"></jsp:include>
-  <h2>Spring MVC03</h2>
+  <h3>회원 게시판</h3>
   <div class="panel panel-default">
     <div class="panel-heading">BOARD</div>
     <div class="panel-body" id="dataList">Panel Content</div>
     <div class="panel-body" id="writeForm" style="display: none">
 		<form id="registerForm">
+			<input type="hidden" id="memID" name="memID" value="${mvo.memID}" />
 			<table class="table table-bordered">
 				<tr>
 					<td>제목</td>
@@ -171,7 +180,7 @@
 				</tr>
 				<tr>
 					<td>작성자</td>
-					<td><input type="text" id="writer" name="writer" class="form-control" /></td>
+					<td><input type="text" id="writer" name="writer" class="form-control" value="${mvo.memName}" readonly /></td>
 				</tr>
 				<tr>
 					<td colspan="2" align="center">

@@ -10,4 +10,5 @@ public class MyBoard {
 	private String writer;	// 작성자
 	private String indate;	// 작성일
 	private int count;	// 조회수
+	private String memID;	// 회원 ID
 }

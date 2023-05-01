@@ -29,6 +29,14 @@
             <li><a href="${contextPath}/updateMemForm.do"><span class="glyphicon glyphicon-wrench"></span> 회원정보수정</a></li>
             <li><a href="${contextPath}/updateImageForm.do"><span class="glyphicon glyphicon-picture"></span> 프로필 사진 등록</a></li>
             <li><a href="${contextPath}/logout.do"><span class="glyphicon glyphicon-log-out"></span> 로그아웃</a></li>
+    		<c:if test="${!empty mvo}">
+				<c:if test="${mvo.memProfile eq ' '}">
+		  			<li><img class="img-circle" src="${contextPath}/resources/images/person.png" style="width: 50px; height: 50px;" /> ${mvo.memName}</li>
+		  		</c:if>
+		  		<c:if test="${mvo.memProfile ne ' '}">
+		  			<li><img class="img-circle" src="${contextPath}/resources/upload/${mvo.memProfile}" style="width: 50px; height: 50px;" /> ${mvo.memName}</li>
+		  		</c:if>
+			</c:if>
 	      </ul>
       </c:if>
     </div>

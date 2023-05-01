@@ -56,4 +56,10 @@
     	  FROM MEMBER_TABLE
     	 WHERE memID=#{memID}
     </select>
+    
+    <update id="updateMemImage" parameterType="kr.board.entity.Member">
+    	UPDATE MEMBER_TABLE 
+    	   SET memProfile=#{memProfile}
+    	 WHERE memID=#{memID}
+    </update>
 </mapper>
