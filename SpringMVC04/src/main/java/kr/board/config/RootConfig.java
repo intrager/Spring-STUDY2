@@ -18,27 +18,25 @@ import com.zaxxer.hikari.HikariDataSource;
 @MapperScan(basePackages = {"kr.board.mapper"})
 @PropertySource({"classpath:persistence-mysql.properties"})
 public class RootConfig {
-	
+
 	@Autowired
 	private Environment env;
 	
 	@Bean
-	public DataSource mysqlDataSource() {
+	public DataSource myDataSource() {
 		HikariConfig hikariConfig = new HikariConfig();
-		
 		hikariConfig.setDriverClassName(env.getProperty("jdbc.driver"));
 		hikariConfig.setJdbcUrl(env.getProperty("jdbc.url"));
 		hikariConfig.setUsername(env.getProperty("jdbc.user"));
 		hikariConfig.setPassword(env.getProperty("jdbc.password"));
 		
-		HikariDataSource mysqlDataSource = new HikariDataSource(hikariConfig);
-		return mysqlDataSource;
+		return new HikariDataSource(hikariConfig);
 	}
 	
 	@Bean
 	public SqlSessionFactory sessionFactory() throws Exception {
 		SqlSessionFactoryBean sessionFactory = new SqlSessionFactoryBean();
-		sessionFactory.setDataSource(mysqlDataSource());
+		sessionFactory.setDataSource(myDataSource());
 		return (SqlSessionFactory) sessionFactory.getObject();
 	}
 }

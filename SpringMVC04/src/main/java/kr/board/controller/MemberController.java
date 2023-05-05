@@ -109,7 +109,8 @@ public class MemberController {
 		
 		if(memberMapper.updateMem(member) > 0) {
 			flashAttributeMessage(rttr, "성공 메시지", "회원정보 수정에 성공했습니다.");
-			session.setAttribute("mvo", member);
+			Member mvo = memberMapper.selectMemberInfo(member.getMemID());
+			session.setAttribute("mvo", mvo);
 			return "redirect:/";
 		} else {
 			flashAttributeMessage(rttr, "실패 메시지", "회원정보 수정에 실패했습니다.");

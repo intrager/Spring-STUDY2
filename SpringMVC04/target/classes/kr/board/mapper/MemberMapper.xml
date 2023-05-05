@@ -41,7 +41,6 @@
     	   	   , memAge=#{memAge}
     	   	   , memGender=#{memGender}
     	   	   , memEmail=#{memEmail}
-    	   	   , memProfile=#{memProfile}
     	 WHERE memID=#{memID} 
     </update>
     

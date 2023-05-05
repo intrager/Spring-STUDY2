@@ -28,6 +28,7 @@
     <div class="panel-heading">Panel Heading</div>
     <div class="panel-body">
     	<form action="${contextPath}/login.do" method="post">
+    		<input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}" />
     		<table class="table table-bordered" style="text-align: center; border : 1px solid #dddddd;">
     			<tr>
     				<td class="forlabel" style="vertical-align : middle;">아이디</td>

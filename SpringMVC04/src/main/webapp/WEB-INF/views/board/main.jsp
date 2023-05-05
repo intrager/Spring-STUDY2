@@ -85,11 +85,17 @@
   	
   	function insertBoard() {
   		var formData = $("#registerForm").serialize();
+  		var csrfHeaderName = "${_csrf.headerName}";
+  		var csrfTokenValue ="${_csrf.token}";
+  		
   		$.ajax({
   			url : "board/new",
   			type : "post",
   			data : formData,
   			success : loadDataList,
+  			beforeSend : function(xhr) {
+  				xhr.setRequestHeader(csrfHeaderName, csrfTokenValue);
+  			},
   			error : function() { alert("error"); }
   		});
   		
@@ -97,6 +103,9 @@
   	}
   	
   	function viewContent(idx) {
+  		var csrfHeaderName = "${_csrf.headerName}";
+  		var csrfTokenValue = "${_csrf.token}";
+  		
   		if($("#content"+idx).css("display") == "none") { // 열릴 때
   			
   			$.ajax({
@@ -118,6 +127,9 @@
   				url : `board/count/\${idx}`,
   				type : "put",
   				dataType : "json",
+  				beforeSend : function(xhr) {
+  					xhr.setRequestHeader(csrfHeaderName, csrfTokenValue);
+  				},
   				success : function(data) {
   					$("#count"+idx).text(data.count); // html도 가능
   				},
@@ -148,11 +160,17 @@
   	function updateContent(idx) {
   		var title = $("#new_title"+idx).val();
   		var content = $("#area"+idx).val();
+  		var csrfHeaderName = "${_csrf.headerName}";
+  		var csrfTokenValue = "${_csrf.token}";
+  		
   		$.ajax({
   			url : "board/update",
   			type : "patch",
   			contentType : 'application/json;charset=utf-8',
   			data : JSON.stringify({"idx" : idx, "title" : title, "content" : content}),
+  			beforeSend : function(xhr) {
+  				xhr.setRequestHeader(csrfHeaderName, csrfTokenValue);
+  			},
   			success : loadDataList,
   			error : function() { alert("error"); }
   		});

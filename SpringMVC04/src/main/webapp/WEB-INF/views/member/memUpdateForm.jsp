@@ -55,6 +55,7 @@
     	<form name="memberForm" action="${contextPath}/updateMem.do" method="post">
     		<input type="hidden" id="memID" name="memID" value="${mvo.memID}" />
     		<input type="hidden" id="memPassword" name="memPassword" value=""/>
+    		<input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}" />
     		<table class="table table-bordered" style="text-align: center; border : 1px solid #dddddd;">
     			<tr>
     				<td class="forlabel" style="vertical-align : middle;">아이디</td>

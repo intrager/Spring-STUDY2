@@ -32,7 +32,7 @@
   <div class="panel panel-default">
     <div class="panel-heading">프로필 사진 수정 화면</div>
     <div class="panel-body">
-    	<form name="memberForm" action="${contextPath}/updateMemImage.do" method="post" enctype="multipart/form-data">
+    	<form name="memberForm" action="${contextPath}/updateMemImage.do?${_csrf.parameterName}=${_csrf.token}" method="post" enctype="multipart/form-data">
     		<input type="hidden" id="memID" name="memID" value="${mvo.memID}" />
     		<table class="table table-bordered" style="text-align: center; border : 1px solid #dddddd;">
     			<tr>
