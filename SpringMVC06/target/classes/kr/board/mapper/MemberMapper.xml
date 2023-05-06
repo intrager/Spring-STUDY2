@@ -1,0 +1,111 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="kr.board.mapper.MemberMapper">
+	<resultMap type="kr.board.entity.Member" id="memberMap">
+		<id property="memIdx" column="memIdx" />
+		<result property="memID" column="memID" />
+		<result property="memPassword" column="memPassword" />
+		<result property="memName" column="memName" />
+		<result property="memAge" column="memAge" />
+		<result property="memGender" column="memGender" />
+		<result property="memEmail" column="memEmail" />
+		<result property="memProfile" column="memProfile" />
+		<collection property="authList" resultMap="authMap"></collection>
+	</resultMap>
+	
+	<resultMap type="kr.board.entity.AuthVO" id="authMap">
+		<id property="no" column="no" />
+		<result property="memID" column="memID" />
+		<result property="auth" column="auth" />
+	</resultMap>
+	
+	<insert id="registerMember" parameterType="kr.board.entity.Member">
+		INSERT INTO mem_security
+		(
+			memIdx
+			, memID
+			, memPassword
+			, memName
+			, memAge
+			, memGender
+			, memEmail
+			, memProfile	
+		)
+		VALUES
+		(
+			(SELECT IFNULL(MAX(memIdx)+1, 1) FROM mem_security AS mem)
+			, #{memID}
+			, #{memPassword}
+			, #{memName}
+			, #{memAge}
+			, #{memGender}
+			, #{memEmail}
+			, #{memProfile}
+		)
+	</insert>
+	
+	<select id="validateLoginInfo" parameterType="String"
+								   resultMap="memberMap">
+		SELECT mem.memIdx
+			   , mem.memID
+			   , mem.memPassword
+			   , mem.memName
+			   , mem.memAge
+			   , mem.memGender
+			   , mem.memEmail
+			   , mem.memProfile
+			   , auth.auth
+		  FROM mem_security AS mem
+		  	   LEFT OUTER JOIN mem_auth AS auth
+		  	   ON mem.memID = auth.memID
+		 WHERE mem.memID=#{memID}					   
+    </select>
+    
+    <update id="updateMem" parameterType="kr.board.entity.Member">
+    	UPDATE mem_security
+    	   SET memPassword=#{memPassword}
+    	   	   , memName=#{memName}
+    	   	   , memAge=#{memAge}
+    	   	   , memGender=#{memGender}
+    	   	   , memEmail=#{memEmail}
+    	 WHERE memID=#{memID} 
+    </update>
+    
+    <select id="selectMemberInfo" parameterType="String" resultMap="memberMap">
+    	SELECT mem.memIdx
+    		   , mem.memID
+    		   , mem.memPassword
+    		   , mem.memName
+    		   , mem.memAge
+    		   , mem.memGender
+    		   , mem.memEmail
+    		   , mem.memProfile
+    		   , auth.auth
+    	  FROM mem_security AS mem 
+    	  	   LEFT OUTER JOIN mem_auth AS auth 
+    	  	   ON mem.memID = auth.memID
+    	 WHERE mem.memID=#{memID}
+    </select>
+    
+    <select id="selectMemImage" resultType="String">
+    	SELECT memProfile
+    	  FROM mem_security
+    	 WHERE memID=#{memID}
+    </select>
+    
+    <update id="updateMemImage" parameterType="kr.board.entity.Member">
+    	UPDATE mem_security 
+    	   SET memProfile=#{memProfile}
+    	 WHERE memID=#{memID}
+    </update>
+    
+    <insert id="insertAuth" parameterType="kr.board.entity.AuthVO"> 
+    	INSERT INTO mem_auth(memID, auth) 
+    	     VALUES (#{memID}, #{auth})
+    </insert>
+    
+    <delete id="deleteAuth">
+    	DELETE FROM mem_auth WHERE memID=#{memID}
+    </delete>
+</mapper>
