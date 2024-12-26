@@ -17,7 +17,7 @@
     <h6 class="m-0 font-weight-bold text-primary">Board Read</h6>
   </div>
   <div class="card-body">
-    <form id="actionForm" method="post" action="/board/modify">
+    <form id="actionForm" method="post">
       <div class="input-group input-group-lg">
         <div class="input-group-prepend">
           <span class="input-group-text">Bno</span>
@@ -61,10 +61,10 @@
 
 <script>
   const bno = '${vo.bno}';
-  const actionForm = document.getElementById('actionForm')
+  const actionForm = document.getElementById('actionForm');
   
   document.getElementById('list').addEventListener("click", (e) => {
-    window.location="/board/list";
+    window.location = "/board/list";
   }, false);
 
   document.getElementById('modify').addEventListener("click", (e) => {
@@ -73,6 +73,7 @@
     
     actionForm.action = `/board/modify/\${bno}`;
     actionForm.method = 'post';
+    actionForm.submit();
   }, false);
   
   document.getElementById('remove').addEventListener("click", (e) => {
@@ -81,6 +82,7 @@
     
     actionForm.action = `/board/remove/\${bno}`;
     actionForm.method = 'post';
+    actionForm.submit();
   });
 </script>
 

@@ -53,6 +53,17 @@ public class BoardController {
         return "/board/" + job;
     }
 
+    //    @GetMapping("/modify/{bno}")
+//    public String modify(@PathVariable(name = "bno") Long bno, Model model) {
+//        log.info("bno : {}", bno);
+//
+//        BoardVO boardVO = boardService.getOneBoard(bno);
+//        log.info("boardVO : {}", boardVO);
+//
+//        model.addAttribute("vo", boardVO);
+//        return "/board/modify";
+//    }
+
     @GetMapping("/register")
     public void register() {
 
@@ -66,14 +77,31 @@ public class BoardController {
         rttr.addFlashAttribute("result", bno);
         return "redirect:/board/list";
     }
-//    @GetMapping("/modify/{bno}")
-//    public String modify(@PathVariable(name = "bno") Long bno, Model model) {
-//        log.info("bno : {}", bno);
-//
-//        BoardVO boardVO = boardService.getOneBoard(bno);
-//        log.info("boardVO : {}", boardVO);
-//
-//        model.addAttribute("vo", boardVO);
-//        return "/board/modify";
-//    }
+
+    @PostMapping("/modify/{bno}")
+    public String modify(@PathVariable(name = "bno") Long bno,
+                         BoardVO boardVO) {
+        boardVO.setBno(bno);
+
+        log.info("boardVO : {}", boardVO);
+        boardService.modify(boardVO);
+
+        return "redirect:/board/read/" + bno;
+    }
+
+    @PostMapping("/remove/{bno}")
+    public String remove(@PathVariable(name = "bno") Long bno,
+                         RedirectAttributes rttr) {
+        BoardVO boardVO = new BoardVO();
+        boardVO.setBno(bno);
+        boardVO.setTitle("해당 글은 삭제되었습니다.");
+        boardVO.setContent("해당 글은 삭제되었습니다.");
+
+        log.info("boardVO : {}", boardVO);
+        boardService.modify(boardVO);
+
+        rttr.addFlashAttribute("result", boardVO.getBno());
+        return "redirect:/board/list";
+    }
+
 }
