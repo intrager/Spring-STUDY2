@@ -8,6 +8,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 import org.zerohan.exzero.domain.BoardVO;
+import org.zerohan.exzero.domain.Criteria;
+
+import java.util.List;
 
 /*
 BoardMapper가 설정한 게 정상적으로 동작하는 걸 확인하기 위해 만든 테스트코드
@@ -56,5 +59,14 @@ public class BoardMapperTests {
         vo.setWriter("testWriter2");
 
         log.info("updated COUNT : {}", boardMapper.update(vo));
+    }
+
+    @Test
+    public void testPage() {
+        Criteria criteria = new Criteria();
+        criteria.setPageNum(2);
+
+        List<BoardVO> list = boardMapper.getBoardsAndPage(criteria);
+        list.forEach(log::info);
     }
 }
