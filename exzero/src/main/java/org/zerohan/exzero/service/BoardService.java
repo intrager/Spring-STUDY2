@@ -5,6 +5,7 @@ import org.apache.logging.log4j.Logger;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.zerohan.exzero.domain.BoardVO;
+import org.zerohan.exzero.domain.Criteria;
 import org.zerohan.exzero.mappers.BoardMapper;
 
 import java.util.List;
@@ -29,6 +30,10 @@ public class BoardService {
 
     public List<BoardVO> getList() {
         return boardMapper.getBoardsList();
+    }
+
+    public List<BoardVO> getListAndPage(Criteria criteria) {
+        return boardMapper.getBoardsAndPage(criteria);
     }
 
     public BoardVO getOneBoard(Long bno) {

@@ -5,12 +5,10 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import org.zerohan.exzero.domain.BoardVO;
+import org.zerohan.exzero.domain.Criteria;
 import org.zerohan.exzero.service.BoardService;
 
 import java.util.List;
@@ -27,9 +25,9 @@ public class BoardController {
     }
 
     @GetMapping("/list")
-    public void getList(Model model) {
+    public void getList(@ModelAttribute Criteria criteria, Model model) {
         log.info("get board list");
-        List<BoardVO> list = boardService.getList();
+        List<BoardVO> list = boardService.getListAndPage(criteria);
         log.info("board list : {}", list);
         model.addAttribute("list", list);
     }
