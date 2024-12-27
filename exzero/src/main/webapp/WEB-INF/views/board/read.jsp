@@ -69,7 +69,6 @@
   document.getElementById('modify').addEventListener("click", (e) => {
     window.location="/board/modify/${vo.bno}";
   }, false);
-  
 </script>
 
 <%@include file="../includes/end.jsp"%>
