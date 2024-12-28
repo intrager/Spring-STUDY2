@@ -19,7 +19,7 @@
 <!-- DataTales Example -->
 <div class="card shadow mb-4">
   <div class="card-header py-3">
-    <h6 class="m-0 font-weight-bold text-primary">DataTables Example</h6>
+    <h6 class="m-0 font-weight-bold text-primary">Board List</h6>
   </div>
   <div class="card-body">
     <div class="table-responsive">
@@ -33,14 +33,14 @@
             <th>UpdateDate</th>
           </tr>
         </thead>
-        <tbody>
+        <tbody id="eventBody">
           <c:forEach var="board" items="${list}">
-            <tr>
-              <th><c:out value="${board.bno}" /></th>
-              <th><c:out value="${board.title}" /></th>
-              <th><c:out value="${board.writer}" /></th>
-              <th><c:out value="${board.registerDate}" /></th>
-              <th><c:out value="${board.updateDate}" /></th>
+            <tr data-bno="${board.bno}">
+              <td><c:out value="${board.bno}" /></td>
+              <td><c:out value="${board.title}" /></td>
+              <td><c:out value="${board.writer}" /></td>
+              <td><c:out value="${board.registerDate}" /></td>
+              <td><c:out value="${board.updateDate}" /></td>
             </tr>
           </c:forEach>
         </tbody>
@@ -79,6 +79,12 @@
   if(result) {
     myModal.show();
   }
+  
+  document.getElementById('eventBody').addEventListener("click", (e) => {
+    const target = e.target.closest("tr");
+    const bno = target.dataset.bno;
+    window.location=`/board/read/\${bno}`;
+  });
 </script>
 
 <%@include file="../includes/end.jsp"%>

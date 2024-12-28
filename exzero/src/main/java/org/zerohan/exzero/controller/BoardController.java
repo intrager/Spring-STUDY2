@@ -42,7 +42,7 @@ public class BoardController {
         log.info("job : {}", job);
         log.info("bno : {}", bno);
 
-        if(!(StringUtils.equals(job, "read") || StringUtils.equals(job, "read"))) {
+        if(!(StringUtils.equals(job, "read") || StringUtils.equals(job, "modify"))) {
             throw new RuntimeException("Bad Job Request");
         }
         BoardVO boardVO = boardService.getOneBoard(bno);
