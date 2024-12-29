@@ -5,4 +5,18 @@
        xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd http://www.springframework.org/schema/context https://www.springframework.org/schema/context/spring-context.xsd">
 
     <context:component-scan base-package="org.zerohan.exzero.sample" />
+
+    <bean name="hikariConfig" class="com.zaxxer.hikari.HikariConfig">
+        <property name="driverClassName" value="oracle.jdbc.driver.OracleDriver" />
+        <property name="jdbcUrl" value="jdbc:oracle:thin:@localhost:1521:XE" />
+        <property name="username" value="inflearn" />
+        <property name="password" value="cometrue" />
+        <property name="connectionTimeout" value="30000" />
+        <property name="minimumIdle" value="2" />
+    </bean>
+
+    <bean class="com.zaxxer.hikari.HikariDataSource" destroy-method="close">
+        <constructor-arg ref="hikariConfig" />
+
+    </bean>
 </beans>
