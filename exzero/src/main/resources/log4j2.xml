@@ -7,7 +7,7 @@
         <PatternLayout />
       </Console>
       <File name="file" fileName="./logs/file/sample.log" append="false">
-        <PatternLayout pattern="%d %5p [%c] %m%n" />
+        <PatternLayout pattern="%d{HH:mm:ss.SSS} [%t] %-5level %logger{36} - %msg%n" />
       </File>
     </Appenders>
 
@@ -16,10 +16,10 @@
       <Logger name="com.zaxxer" level="DEBUG" additivity="false">
         <AppenderRef ref="console" />
       </Logger>
-      <Logger name="java.sql" level="TRACE" additivity="false">
+      <Logger name="org.zerohan" level="TRACE" additivity="false">
         <AppenderRef ref="console" />
       </Logger>
-      <Root level="INFO">
+      <Root level="debug">
         <AppenderRef ref="console" />
       </Root>
     </Loggers>
