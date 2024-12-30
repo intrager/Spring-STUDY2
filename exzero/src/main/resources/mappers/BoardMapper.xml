@@ -36,6 +36,10 @@
       where row_num between #{skip} and #{skippedAmount}
     </select>
 
+    <select id="getTotal" resultType="int">
+      select count(bno) from board
+    </select>
+
     <insert id="insert">
         insert into board (
             title

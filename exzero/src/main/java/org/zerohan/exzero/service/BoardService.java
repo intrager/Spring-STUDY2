@@ -36,6 +36,10 @@ public class BoardService {
         return boardMapper.getBoardsAndPage(criteria);
     }
 
+    public int getTotal(Criteria criteria) {
+        return boardMapper.getTotal(criteria);
+    }
+
     public BoardVO getOneBoard(Long bno) {
         log.info("get one board : {}", bno);
         return boardMapper.select(bno);

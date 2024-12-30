@@ -11,6 +11,8 @@ public interface BoardMapper {
 
     List<BoardVO> getBoardsAndPage(Criteria criteria);
 
+    int getTotal(Criteria criteria);
+
     // insert는 dml이므로 몇 개의 행이 바뀌었다/안 바뀌었다의 개수를 반환하므로 int 반환타입임
     int insert(BoardVO boardVO);
 

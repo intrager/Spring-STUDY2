@@ -9,6 +9,7 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import org.zerohan.exzero.domain.BoardVO;
 import org.zerohan.exzero.domain.Criteria;
+import org.zerohan.exzero.domain.PageDTO;
 import org.zerohan.exzero.service.BoardService;
 
 import java.util.List;
@@ -30,6 +31,9 @@ public class BoardController {
         List<BoardVO> list = boardService.getListAndPage(criteria);
         log.info("board list : {}", list);
         model.addAttribute("list", list);
+
+        PageDTO pageDTO = new PageDTO(criteria, boardService.getTotal(criteria));
+        model.addAttribute("pageMaker", pageDTO);
     }
 
 //    @GetMapping(value = {"/read/{bno}", "/modify/{bno}"})
