@@ -52,9 +52,6 @@
 <%@include file="../includes/footer.jsp"%>
 
 <script>
-  const name = 'AAA';
-  
-  console.log();
 </script>
 
 <%@include file="../includes/end.jsp"%>
