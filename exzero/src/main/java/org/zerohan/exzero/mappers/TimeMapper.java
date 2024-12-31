@@ -10,4 +10,6 @@ public interface TimeMapper {
      */
     @Select("select sysdate from dual")
     LocalDateTime getTime();
+
+    LocalDateTime getTimeUsingMapper();
 }

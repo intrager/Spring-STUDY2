@@ -23,6 +23,7 @@
     <bean class="org.mybatis.spring.SqlSessionFactoryBean">
         <property name="dataSource" ref="dataSource" />
         <property name="configLocation" value="classpath:mybatis-config.xml"/> <!-- classpath:라고 하면 resources부터 시작함 -->
+        <property name="mapperLocations" value="classpath:mappers/*.xml" />
     </bean>
 
     <!-- 설정한 패키지를 조사해서 그에 대한 객체를 만들어냄 -->
