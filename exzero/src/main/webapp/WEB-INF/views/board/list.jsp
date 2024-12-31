@@ -50,17 +50,17 @@
         <ul class="pagination">
           <c:if test="${pageMaker.prev}">
             <li class="page-item ">
-              <a class="page-link" href="#" tabindex="-1">Previous</a>
+              <a class="page-link" href="${pageMaker.startPage - 1}" tabindex="-1">Previous</a>
             </li>
           </c:if>
           <c:forEach begin="${pageMaker.startPage}" end="${pageMaker.endPage}" var="num">
             <li class="page-item ${criteria.pageNum == num ? 'active' : ''}">
-              <a class="page-link" href="#">${num}</a>
+              <a class="page-link" href="${num}">${num}</a>
             </li>
           </c:forEach>
           <c:if test="${pageMaker.next}">
             <li class="page-item">
-              <a class="page-link" href="#">Next</a>
+              <a class="page-link" href="${pageMaker.endPage + 1}">Next</a>
             </li>
           </c:if>
         </ul>
@@ -94,7 +94,6 @@
 <script>
   const result = '${result}';
   const myModal = new bootstrap.Modal(document.getElementById('myModal'));
-  console.log(myModal);
   
   if(result) {
     myModal.show();
@@ -104,7 +103,15 @@
     const target = e.target.closest("tr");
     const bno = target.dataset.bno;
     window.location=`/board/read/\${bno}`;
-  });
+  }, false);
+  
+  document.querySelector('.pagination').addEventListener("click", (e) => {
+    e.preventDefault();
+    const target = e.target;
+    const targetPage = target.getAttribute("href");
+    
+    window.location=`/board/list?pageNum=\${targetPage}`;
+  }, false);
 </script>
 
 <%@include file="../includes/end.jsp"%>
