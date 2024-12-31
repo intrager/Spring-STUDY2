@@ -58,16 +58,26 @@
     </div>
   </div>
 </div>
-  
+
+<form id="actionForm" method="get" action="/board/list">
+  <input type="hidden" name="pageNum" value="<c:out value="${criteria.pageNum}"/>" />
+  <input type="hidden" name="amount" value="<c:out value="${criteria.amount}"/>" />
+</form>
+
 <%@include file="../includes/footer.jsp"%>
 
 <script>
+  const actionForm = document.getElementById("actionForm");
+  const bno = '${vo.bno}';
+  
   document.getElementById('list').addEventListener("click", (e) => {
-    window.location="/board/list";
+    actionForm.setAttribute("action", "/board/list");
+    actionForm.submit();
   }, false);
   
   document.getElementById('modify').addEventListener("click", (e) => {
-    window.location="/board/modify/${vo.bno}";
+    actionForm.setAttribute("action", `/board/modify/\${bno}`);
+    actionForm.submit();
   }, false);
 </script>
 

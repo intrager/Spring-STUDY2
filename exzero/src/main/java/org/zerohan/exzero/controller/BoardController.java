@@ -37,10 +37,12 @@ public class BoardController {
     }
 
 //    @GetMapping(value = {"/read/{bno}", "/modify/{bno}"})
-    @GetMapping(value = {"/{job}/{bno}"})
+    @GetMapping(value = "/{job}/{bno}")
     public String read(
             @PathVariable(name = "job") String job,
-            @PathVariable(name = "bno") Long bno, Model model) {
+            @PathVariable(name = "bno") Long bno,
+            @ModelAttribute Criteria criteria,
+            Model model) {
         log.info("job : {}", job);
         log.info("bno : {}", bno);
 

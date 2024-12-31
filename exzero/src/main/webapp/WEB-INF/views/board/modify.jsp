@@ -17,7 +17,7 @@
     <h6 class="m-0 font-weight-bold text-primary">Board Read</h6>
   </div>
   <div class="card-body">
-    <form id="actionForm" method="post">
+    <form id="actionForm" action="/board/modify" method="post">
       <div class="input-group input-group-lg">
         <div class="input-group-prepend">
           <span class="input-group-text">Bno</span>
@@ -57,14 +57,23 @@
   </div>
 </div>
 
+<form id="listForm" action="/board/list">
+  <input type="hidden" name="pageNum" value="<c:out value="${criteria.pageNum}"/>" />
+  <input type="hidden" name="amount" value="<c:out value="${criteria.amount}"/>" />
+</form>
+
 <%@include file="../includes/footer.jsp"%>
 
 <script>
   const bno = '${vo.bno}';
   const actionForm = document.getElementById('actionForm');
+  const listForm = document.getElementById('listForm');
   
   document.getElementById('list').addEventListener("click", (e) => {
-    window.location = "/board/list";
+    e.preventDefault();
+    e.stopPropagation();
+
+    listForm.submit();
   }, false);
 
   document.getElementById('modify').addEventListener("click", (e) => {
@@ -83,7 +92,7 @@
     actionForm.action = `/board/remove/\${bno}`;
     actionForm.method = 'post';
     actionForm.submit();
-  });
+  }, false);
 </script>
 
 <%@include file="../includes/end.jsp"%>

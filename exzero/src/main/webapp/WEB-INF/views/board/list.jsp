@@ -23,7 +23,10 @@
   </div>
   <div class="card-body">
     <div class="table-responsive">
-      ${pageMaker}
+      <form id="actionForm" method="get" action="/board/list">
+        <input type="hidden" name="pageNum" value="<c:out value="${criteria.pageNum}"/>" />
+        <input type="hidden" name="amount" value="<c:out value="${criteria.amount}"/>" />
+      </form>
       <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
         <thead>
           <tr>
@@ -98,19 +101,40 @@
   if(result) {
     myModal.show();
   }
+
+  const actionForm = document.getElementById("actionForm");
   
   document.getElementById('eventBody').addEventListener("click", (e) => {
     const target = e.target.closest("tr");
     const bno = target.dataset.bno;
-    window.location=`/board/read/\${bno}`;
+    
+    const before = document.getElementById("clonedActionForm");
+    
+    if(before) {
+      before.remove();
+    }
+    
+    const clonedActionForm = actionForm.cloneNode(true);
+    clonedActionForm.setAttribute("action", `/board/read/\${bno}`);
+    /*
+      DOM 엘리먼트 안에 없어서
+      Form submission canceled because the form is not connected 발생.
+      id 집어넣은 후 body에 appendChild()로 붙여줘야 함.
+     */
+    clonedActionForm.setAttribute("id", "clonedActionForm");
+    document.body.appendChild(clonedActionForm);
+    
+    clonedActionForm.submit();
   }, false);
-  
+
   document.querySelector('.pagination').addEventListener("click", (e) => {
     e.preventDefault();
     const target = e.target;
     const targetPage = target.getAttribute("href");
-    
-    window.location=`/board/list?pageNum=\${targetPage}`;
+
+    actionForm.setAttribute("action", "/board/list");
+    actionForm.querySelector("input[name='pageNum']").value = targetPage;
+    actionForm.submit();
   }, false);
 </script>
 
