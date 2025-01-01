@@ -7,6 +7,7 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
+import org.zerohan.exzero.domain.BoardVO;
 
 /*
 BoardMapper가 설정한 게 정상적으로 동작하는 걸 확인하기 위해 만든 테스트코드
@@ -20,12 +21,40 @@ public class BoardMapperTests {
     BoardMapper boardMapper;
 
     @Test
-    public void testBoardMapperConnection() {
+    void testBoardMapperConnection() {
         log.info(boardMapper);
     }
 
     @Test
-    public void testGetList() {
+    void testGetList() {
         boardMapper.getBoardsList().forEach(log::info);
+    }
+
+    @Test
+    void testInsert() {
+        BoardVO vo = new BoardVO();
+        vo.setTitle("testTitle");
+        vo.setContent("testContent");
+        vo.setWriter("testWriter");
+
+        log.info("inserted COUNT : {}", boardMapper.insert(vo));
+        log.info("BNO : {}", vo.getBno());
+    }
+
+    @Test
+    void testSelect() {
+        Long bno = 8L;
+        log.info(boardMapper.select(bno));
+    }
+
+    @Test
+    void testUpdate() {
+        BoardVO vo = new BoardVO();
+        vo.setBno(8L);
+        vo.setTitle("testTitle2");
+        vo.setContent("testContent2");
+        vo.setWriter("testWriter2");
+
+        log.info("updated COUNT : {}", boardMapper.update(vo));
     }
 }

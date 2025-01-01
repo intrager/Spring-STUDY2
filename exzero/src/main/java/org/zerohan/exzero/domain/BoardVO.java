@@ -11,6 +11,8 @@ public class BoardVO {
     private LocalDateTime registerDate;
     private LocalDateTime updateDate;
 
+    public BoardVO() {}
+
     public BoardVO(Long bno, String title, String content, String writer, LocalDateTime registerDate, LocalDateTime updateDate) {
         this.bno = bno;
         this.title = Objects.requireNonNull(title);

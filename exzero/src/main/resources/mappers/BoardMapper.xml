@@ -17,4 +17,39 @@
         where bno > 0 -- bno가 숫자 PK이기 때문에 걸면 빨라짐
         order by bno desc
     </select>
+
+    <insert id="insert">
+        insert into board (
+            title
+          , content
+          , writer
+        ) values (
+            #{title}
+          , #{content}
+          , #{writer}
+        )
+        <selectKey order="AFTER" keyProperty="bno" resultType="long">
+            select sequence_board.currval from dual
+        </selectKey>
+    </insert>
+
+    <select id="select" resultType="BoardVO">
+        select
+            bno
+          , title
+          , content
+          , writer
+          , registerDate
+          , updateDate
+        from board
+        where bno = #{bno}
+    </select>
+
+    <update id="update">
+        update board
+        set title = #{title}
+          , content = #{content}
+          , updateDate = sysdate
+        where bno = #{bno}
+    </update>
 </mapper>
