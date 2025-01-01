@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="org.zerohan.exzero.mappers.BoardMapper">
+
+    <select id="getBoardsList" resultType="BoardVO">
+        select
+            bno
+          , title
+          , content
+          , writer
+          , registerDate
+          , updateDate
+        from board
+        where bno > 0 -- bno가 숫자 PK이기 때문에 걸면 빨라짐
+        order by bno desc
+    </select>
+</mapper>
