@@ -23,6 +23,7 @@
         <load-on-startup>1</load-on-startup>
     </servlet>
 
+    <!-- /로 들어오면 appServlet이라는 애가 동작한다 -->
     <servlet-mapping>
         <servlet-name>appServlet</servlet-name>
         <url-pattern>/</url-pattern>

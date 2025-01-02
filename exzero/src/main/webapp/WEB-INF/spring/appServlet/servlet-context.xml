@@ -16,5 +16,7 @@
     <!-- 얘까지 설정해야지 @Controller같은 애를 인식할 수 있음 -->
     <mvc:annotation-driven />
 
-
+    <!-- 다음 설정이 되어있는지 확인 xmlns:mvc="http://www.springframework.org/schema/mvc"-->
+    <!-- 어떤 소스가 resource 파일의 경로입니까 -->
+    <mvc:resources mapping="/resources/**" location="classpath:/static/" />
 </beans>
