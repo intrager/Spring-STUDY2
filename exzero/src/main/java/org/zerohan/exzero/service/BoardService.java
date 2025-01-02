@@ -1,8 +1,10 @@
 package org.zerohan.exzero.service;
 
+import lombok.RequiredArgsConstructor;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import org.zerohan.exzero.domain.BoardVO;
 import org.zerohan.exzero.mappers.BoardMapper;
 
@@ -18,6 +20,7 @@ public class BoardService {
         this.boardMapper = boardMapper;
     }
 
+    @Transactional
     public Long register(BoardVO boardVO) {
         log.info("board register : {}", boardVO);
         int count = boardMapper.insert(boardVO);
@@ -34,11 +37,13 @@ public class BoardService {
         return boardMapper.select(bno);
     }
 
+    @Transactional
     public boolean modify(BoardVO boardVO) {
         log.info("modify one : {}", boardVO);
         return boardMapper.update(boardVO) == 1;
     }
 
+    @Transactional
     public boolean remove(Long bno) {
         log.info("soft delete one : {}", bno);
         return true;

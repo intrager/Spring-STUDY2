@@ -7,7 +7,6 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
-import org.zerohan.exzero.domain.BoardVO;
 import org.zerohan.exzero.mappers.BoardMapperTests;
 
 @ExtendWith(SpringExtension.class)
@@ -15,16 +14,11 @@ import org.zerohan.exzero.mappers.BoardMapperTests;
 public class BoardServiceTests {
     private static final Logger log = LogManager.getLogger(BoardMapperTests.class);
 
-    @Autowired(required = false)
+    @Autowired
     BoardService boardService;
 
     @Test
     void testList() {
         log.info(boardService.getList());
-    }
-
-    @Test
-    void testOneBoard() {
-
     }
 }

@@ -1,5 +1,6 @@
 package org.zerohan.exzero.mappers;
 
+import org.springframework.stereotype.Repository;
 import org.zerohan.exzero.domain.BoardVO;
 
 import java.util.List;
