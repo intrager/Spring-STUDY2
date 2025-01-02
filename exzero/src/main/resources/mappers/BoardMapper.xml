@@ -30,14 +30,48 @@
             , updateDate
             , row_number() over (order by bno desc) as row_num
             from board
-            where bno > 0
+            <where> bno > 0
+              <if test='types != null and keyword != null and !keyword.equals("")'>
+                <foreach collection="types" item="type" open=" and (" close=")" separator="or">
+                    <choose>
+                      <when test='type.equals("T")'>
+                        title like '%' || #{keyword} || '%'
+                      </when>
+                      <when test='type.equals("C")'>
+                        content like '%' || #{keyword} || '%'
+                      </when>
+                      <when test='type.equals("W")'>
+                        writer like '%' || #{keyword} || '%'
+                      </when>
+                    </choose>
+                </foreach>
+              </if>
+            </where>
             order by bno desc
       )
       where row_num between #{skip} and #{skippedAmount}
     </select>
 
     <select id="getTotal" resultType="int">
-      select count(bno) from board
+      select count(bno)
+      from board
+      <where> bno > 0
+        <if test='types != null and keyword != null and !keyword.equals("")'>
+          <foreach collection="types" item="type" open=" and (" close=")" separator="or">
+            <choose>
+              <when test='type.equals("T")'>
+                title like '%' || #{keyword} || '%'
+              </when>
+              <when test='type.equals("C")'>
+                content like '%' || #{keyword} || '%'
+              </when>
+              <when test='type.equals("W")'>
+                writer like '%' || #{keyword} || '%'
+              </when>
+            </choose>
+          </foreach>
+        </if>
+      </where>
     </select>
 
     <insert id="insert">
