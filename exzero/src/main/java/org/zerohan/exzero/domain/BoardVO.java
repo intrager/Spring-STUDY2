@@ -15,11 +15,11 @@ public class BoardVO {
 
     public BoardVO(Long bno, String title, String content, String writer, LocalDateTime registerDate, LocalDateTime updateDate) {
         this.bno = bno;
-        this.title = Objects.requireNonNull(title);
-        this.content = Objects.requireNonNull(content);
-        this.writer = Objects.requireNonNull(writer);
-        this.registerDate = Objects.requireNonNull(registerDate);
-        this.updateDate = Objects.requireNonNull(updateDate);
+        this.title = title;
+        this.content = content;
+        this.writer = writer;
+        this.registerDate = registerDate;
+        this.updateDate = updateDate;
     }
 
     public Long getBno() {

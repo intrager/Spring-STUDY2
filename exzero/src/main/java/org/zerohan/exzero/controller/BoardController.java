@@ -31,7 +31,7 @@ public class BoardController {
         List<BoardVO> list = boardService.getListAndPage(criteria);
         log.info("board list : {}", list);
         model.addAttribute("list", list);
-
+        log.info("criteria : {}", criteria);
         PageDTO pageDTO = new PageDTO(criteria, boardService.getTotal(criteria));
         model.addAttribute("pageMaker", pageDTO);
     }

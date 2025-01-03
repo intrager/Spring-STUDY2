@@ -26,6 +26,12 @@
       <form id="actionForm" method="get" action="/board/list">
         <input type="hidden" name="pageNum" value="<c:out value="${criteria.pageNum}"/>" />
         <input type="hidden" name="amount" value="<c:out value="${criteria.amount}"/>" />
+        <c:if test="${criteria.types != null && criteria.keyword != null}">
+          <c:forEach var="type" items="${criteria.types}">
+            <input type="hidden" name="types" value="${type}" />
+          </c:forEach>
+          <input type="hidden" name="keyword" value="<c:out value="${criteria.keyword}"/>" />
+        </c:if>
       </form>
       <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
         <thead>
