@@ -22,6 +22,19 @@
     <h6 class="m-0 font-weight-bold text-primary">Board List</h6>
   </div>
   <div class="card-body">
+    <div>
+      <select name="typeSelect">
+        <option value="">선택</option>
+        <option value="T" ${criteria.typeWords == 'T' ? 'selected' : ''}>제목</option>
+        <option value="C" ${criteria.typeWords == 'C' ? 'selected' : ''}>내용</option>
+        <option value="W" ${criteria.typeWords == 'W' ? 'selected' : ''}>작성자</option>
+        <option value="TC" ${criteria.typeWords == 'TC' ? 'selected' : ''}>제목or내용</option>
+        <option value="TW" ${criteria.typeWords == 'TW' ? 'selected' : ''}>제목or작성자</option>
+        <option value="TCW" ${criteria.typeWords == 'TCW' ? 'selected' : ''}>제목or내용or작성자</option>
+      </select>
+      <input type="text" name="keywordInput" value="<c:out value="${criteria.keyword}"/>" />
+      <button id="search" class="btn btn-default">검색</button>
+    </div>
     <div class="table-responsive">
       <form id="actionForm" method="get" action="/board/list">
         <input type="hidden" name="pageNum" value="<c:out value="${criteria.pageNum}"/>" />
@@ -142,6 +155,33 @@
     actionForm.querySelector("input[name='pageNum']").value = targetPage;
     actionForm.submit();
   }, false);
+  
+  document.getElementById('search').addEventListener("click", (e) => {
+    e.preventDefault();
+    e.stopPropagation();
+    
+    const selectedType = document.querySelector("select[name='typeSelect']");
+    const typesValue = selectedType.options[selectedType.selectedIndex].value;
+    const typeArr = typesValue.split("");
+    
+    /*
+      actionForm에 hidden 태그로 만들어서 검색 조건 추가
+      페이지 번호도 1페이지로, amount도 새로 만듦
+     */
+    let conditions = `<input type='hidden' name='pageNum' value=1 />`;
+    conditions += `<input type='hidden' name='amount' value=${criteria.amount} />`;
+    if(typeArr && typeArr.length > 0) {
+      for(const type of typeArr) {
+        conditions += `<input type='hidden' name='types' value=\${type}>`;
+      }
+    }
+    
+    const keyword = document.querySelector("input[name='keywordInput']").value;
+    conditions += `<input type='hidden' name='keyword' value='\${keyword}'/>`;
+    
+    actionForm.innerHTML = conditions;
+    actionForm.submit();
+  });
 </script>
 
 <%@include file="../includes/end.jsp"%>

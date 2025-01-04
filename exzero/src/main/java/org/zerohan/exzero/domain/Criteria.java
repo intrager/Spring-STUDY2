@@ -1,5 +1,7 @@
 package org.zerohan.exzero.domain;
 
+import org.apache.commons.lang3.StringUtils;
+
 import java.util.Arrays;
 import java.util.Objects;
 
@@ -9,6 +11,8 @@ public class Criteria {
 
     private String[] types;
     private String keyword;
+
+    private String typeWords;
 
     public Criteria() {
         this.pageNum = 1;
@@ -60,6 +64,9 @@ public class Criteria {
 
     public void setTypes(String[] types) {
         this.types = types;
+        if(types != null && types.length > 0) {
+            typeWords = String.join("", types);
+        }
     }
 
     public String getKeyword() {
@@ -70,6 +77,14 @@ public class Criteria {
         this.keyword = keyword;
     }
 
+    public String getTypeWords() {
+        return typeWords;
+    }
+
+    public void setTypeWords(String typeWords) {
+        this.typeWords = typeWords;
+    }
+
     @Override
     public String toString() {
         return "Criteria(" +
@@ -77,6 +92,7 @@ public class Criteria {
                 ", amount=" + amount +
                 ", types=" + Arrays.toString(types) +
                 ", keyword='" + keyword + '\'' +
+                ", typeWords='" + typeWords + '\'' +
                 ')';
     }
 
@@ -85,11 +101,11 @@ public class Criteria {
         if (this == o) return true;
         if (!(o instanceof Criteria)) return false;
         Criteria criteria = (Criteria) o;
-        return pageNum == criteria.pageNum && amount == criteria.amount && Objects.deepEquals(types, criteria.types) && Objects.equals(keyword, criteria.keyword);
+        return pageNum == criteria.pageNum && amount == criteria.amount && Objects.deepEquals(types, criteria.types) && Objects.equals(keyword, criteria.keyword) && Objects.equals(typeWords, criteria.typeWords);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(pageNum, amount, Arrays.hashCode(types), keyword);
+        return Objects.hash(pageNum, amount, Arrays.hashCode(types), keyword, typeWords);
     }
 }
