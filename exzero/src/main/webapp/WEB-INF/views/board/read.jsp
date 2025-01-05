@@ -59,14 +59,46 @@
   </div>
 </div>
 
+<div id='myModal' class="modal" tabindex="-1">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title">Modal title</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <p>Modal body text goes here.</p>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+        <button type="button" class="btn btn-primary">Save changes</button>
+      </div>
+    </div>
+  </div>
+</div>
+
 <form id="actionForm" method="get" action="/board/list">
   <input type="hidden" name="pageNum" value="<c:out value="${criteria.pageNum}"/>" />
   <input type="hidden" name="amount" value="<c:out value="${criteria.amount}"/>" />
+  <c:if test="${criteria.types != null && criteria.keyword != null}">
+    <c:forEach var="type" items="${criteria.types}">
+      <input type="hidden" name="types" value="${type}" />
+    </c:forEach>
+    <input type="hidden" name="keyword" value="<c:out value="${criteria.keyword}"/>" />
+  </c:if>
 </form>
 
 <%@include file="../includes/footer.jsp"%>
 
 <script>
+  const result = '${result}';
+  const myModal = new bootstrap.Modal(document.getElementById('myModal'));
+  if(result) {
+    myModal.show();
+  }
+  
   const actionForm = document.getElementById("actionForm");
   const bno = '${vo.bno}';
   
