@@ -1,0 +1,111 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="org.zerohan.exzero.mappers.BoardMapper">
+
+    <select id="getBoardsList" resultType="BoardVO">
+      select
+          bno
+        , title
+        , content
+        , writer
+        , registerDate
+        , updateDate
+      from board
+      where bno > 0 -- bno가 숫자 PK이기 때문에 걸면 빨라짐
+      order by bno desc
+    </select>
+
+    <select id="getBoardsAndPage" resultType="BoardVO">
+      select *
+      from (
+            select
+              bno
+            , title
+            , content
+            , writer
+            , registerDate
+            , updateDate
+            , row_number() over (order by bno desc) as row_num
+            from board
+            <where> bno > 0
+              <if test='types != null and keyword != null and !keyword.equals("")'>
+                <foreach collection="types" item="type" open=" and (" close=")" separator="or">
+                    <choose>
+                      <when test='type.equals("T")'>
+                        title like '%' || #{keyword} || '%'
+                      </when>
+                      <when test='type.equals("C")'>
+                        content like '%' || #{keyword} || '%'
+                      </when>
+                      <when test='type.equals("W")'>
+                        writer like '%' || #{keyword} || '%'
+                      </when>
+                    </choose>
+                </foreach>
+              </if>
+            </where>
+            order by bno desc
+      )
+      where row_num between #{skip} and #{skippedAmount}
+    </select>
+
+    <select id="getTotal" resultType="int">
+      select count(bno)
+      from board
+      <where> bno > 0
+        <if test='types != null and keyword != null and !keyword.equals("")'>
+          <foreach collection="types" item="type" open=" and (" close=")" separator="or">
+            <choose>
+              <when test='type.equals("T")'>
+                title like '%' || #{keyword} || '%'
+              </when>
+              <when test='type.equals("C")'>
+                content like '%' || #{keyword} || '%'
+              </when>
+              <when test='type.equals("W")'>
+                writer like '%' || #{keyword} || '%'
+              </when>
+            </choose>
+          </foreach>
+        </if>
+      </where>
+    </select>
+
+    <insert id="insert">
+        insert into board (
+            title
+          , content
+          , writer
+        ) values (
+            #{title}
+          , #{content}
+          , #{writer}
+        )
+        <selectKey order="AFTER" keyProperty="bno" resultType="long">
+            select sequence_board.currval from dual
+        </selectKey>
+    </insert>
+
+    <select id="select" resultType="BoardVO">
+        select
+            bno
+          , title
+          , content
+          , writer
+          , registerDate
+          , updateDate
+        from board
+        where bno = #{bno}
+    </select>
+
+    <update id="update">
+        update board
+        set title = #{title}
+          , content = #{content}
+          , updateDate = sysdate
+        where bno = #{bno}
+    </update>
+</mapper>

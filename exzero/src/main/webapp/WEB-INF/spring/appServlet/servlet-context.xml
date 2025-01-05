@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:context="http://www.springframework.org/schema/context"
+       xmlns:mvc="http://www.springframework.org/schema/mvc"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd http://www.springframework.org/schema/context https://www.springframework.org/schema/context/spring-context.xsd http://www.springframework.org/schema/mvc https://www.springframework.org/schema/mvc/spring-mvc.xsd">
+
+    <!-- View를 찾아갈 때 어떻게 찾아갈 거야? -->
+    <bean class="org.springframework.web.servlet.view.InternalResourceViewResolver">
+        <property name="prefix" value="/WEB-INF/views/" />
+        <property name="suffix" value=".jsp" />
+    </bean>
+
+    <!-- @Controller 같은 애들 붙여놓으면 해당 패키지 조사해서 빈으로 인식해줌 -->
+    <context:component-scan base-package="org.zerohan.exzero.controller" />
+    <!-- 얘까지 설정해야지 @Controller같은 애를 인식할 수 있음 -->
+    <mvc:annotation-driven />
+
+    <!-- 다음 설정이 되어있는지 확인 xmlns:mvc="http://www.springframework.org/schema/mvc"-->
+    <!-- 어떤 소스가 resource 파일의 경로입니까 -->
+    <mvc:resources mapping="/resources/**" location="classpath:/static/" />
+</beans>

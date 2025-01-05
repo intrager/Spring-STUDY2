@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:context="http://www.springframework.org/schema/context"
+       xmlns:mybatis-spring="http://mybatis.org/schema/mybatis-spring"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans
+            http://www.springframework.org/schema/beans/spring-beans.xsd
+            http://www.springframework.org/schema/context
+            https://www.springframework.org/schema/context/spring-context.xsd
+            http://mybatis.org/schema/mybatis-spring
+            http://mybatis.org/schema/mybatis-spring.xsd">
+
+    <context:component-scan base-package="org.zerohan.exzero.sample"/>
+    <context:component-scan base-package="org.zerohan.exzero.service"/>
+
+    <bean name="hikariConfig" class="com.zaxxer.hikari.HikariConfig">
+        <property name="driverClassName" value="oracle.jdbc.driver.OracleDriver" />
+        <property name="jdbcUrl" value="jdbc:oracle:thin:@localhost:1521:XE" />
+        <property name="username" value="inflearn" />
+        <property name="password" value="cometrue" />
+        <property name="connectionTimeout" value="30000" />
+        <property name="minimumIdle" value="2" />
+    </bean>
+
+    <bean name="dataSource" class="com.zaxxer.hikari.HikariDataSource" destroy-method="close">
+        <constructor-arg ref="hikariConfig" />
+    </bean>
+
+    <bean class="org.mybatis.spring.SqlSessionFactoryBean">
+        <property name="dataSource" ref="dataSource" />
+        <property name="configLocation" value="classpath:mybatis-config.xml"/> <!-- classpath:라고 하면 resources부터 시작함 -->
+        <property name="mapperLocations" value="classpath:mappers/*.xml" />
+    </bean>
+
+    <!-- 설정한 패키지를 조사해서 그에 대한 객체를 만들어냄 -->
+    <mybatis-spring:scan base-package="org.zerohan.exzero.mappers" />
+
+</beans>
